@@ -10,8 +10,7 @@ namespace TravelAgencyContracts.BindingModels
     {
         public int? Id { get; set; }
         public string TourName { get; set; }
-        public string OperatorLogin { get; set; }
-        public Dictionary<int, string> TourExcursions { get; set; }
-        
+        public string OperatorLogin { get; set; }                
+
     }
 }

@@ -1,0 +1,26 @@
+﻿<Window x:Class="TravelAgencyOperatorView.WindowRegistration"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TravelAgencyOperatorView"
+        mc:Ignorable="d"
+        Title="Регистрация" Height="250" Width="300" Background="#BF80FF">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Логин:</TextBlock>
+        <TextBox Name="LoginTextBox" Grid.Row="0" Grid.Column="1" Margin="0, 10, 10, 10" VerticalContentAlignment="Center"></TextBox>
+        <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Пароль:</TextBlock>
+        <PasswordBox Name="PasswordTextBox" Grid.Row="1" Grid.Column="1" Margin="0, 10, 10, 10" VerticalContentAlignment="Center"></PasswordBox>
+        <Button Grid.Row="2" Grid.Column="0" Click="Registration_Click" Margin="5" Style="{StaticResource MyButtonStyle}">Зарегистрировать</Button>
+        <Button Grid.Row="2" Grid.Column="1" Click="Cancel_Click" Margin="5" Style="{StaticResource MyButtonStyle}">Отмена</Button>
+    </Grid>
+</Window>

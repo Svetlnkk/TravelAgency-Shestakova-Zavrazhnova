@@ -13,9 +13,11 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
     public class GuideLogic : IGuideLogic
     {
         private readonly IGuideStorage guideStorage;
-        public GuideLogic(IGuideStorage guideStorage)
+        private readonly ITourStorage tourStorage;
+        public GuideLogic(IGuideStorage guideStorage, ITourStorage tourStorage)
         {
             this.guideStorage = guideStorage;
+            this.tourStorage = tourStorage;
         }
         public List<GuideViewModel> Read(GuideBindingModel model)
         {
@@ -59,6 +61,20 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
                 throw new Exception("Гид не найден");
             }
             guideStorage.Delete(model);
+        }
+        public void AddTour((int, (int, int)) addTour)
+        {
+            var guide = guideStorage.GetElement(new GuideBindingModel { Id = addTour.Item1 });
+            if (guide == null)
+            {
+                throw new Exception("Гид не найден");
+            }
+            var tour = tourStorage.GetElement(new TourBindingModel { Id = addTour.Item2.Item1 });
+            if (tour == null)
+            {
+                throw new Exception("Тур не найден");
+            }
+            guideStorage.AddTour(addTour);
         }
     }
 }

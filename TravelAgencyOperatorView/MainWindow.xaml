@@ -5,8 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TravelAgencyOperatorView"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Оператор" Height="450" Width="800" Background="#BF80FF">
     <Grid>
-
+        <Menu Height="25" VerticalAlignment="Top">
+            <MenuItem Header="Гиды" Click="Guides_Click"></MenuItem>
+            <MenuItem Header="Туры" Click="Tours_Click"></MenuItem>
+            <MenuItem Header="Остановки" Click="Stops_Click"></MenuItem>
+            <MenuItem Header="Получение списка" Click="ReportExcursionsbyTours_Click"></MenuItem>
+            <MenuItem Header="Отчет" Click="ReportGuides_Click"></MenuItem>            
+        </Menu>
+        <Image Name ="img" Source="images/yellow-ticket.jpg" Margin="0,30,0,0"></Image>
     </Grid>
 </Window>

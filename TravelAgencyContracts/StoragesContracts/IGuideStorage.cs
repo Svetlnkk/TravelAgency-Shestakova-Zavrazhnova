@@ -16,5 +16,6 @@ namespace TravelAgencyContracts.StoragesContracts
         void Insert(GuideBindingModel model);
         void Update(GuideBindingModel model);
         void Delete(GuideBindingModel model);
+        void AddTour((int, (int, int)) addTour);
     }
 }

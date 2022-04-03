@@ -13,5 +13,6 @@ namespace TravelAgencyContracts.BussinessLogicsContracts
         List<GuideViewModel> Read(GuideBindingModel model);
         void CreateOrUpdate(GuideBindingModel model);
         void Delete(GuideBindingModel model);
+        void AddTour((int, (int, int)) addTour);
     }
 }

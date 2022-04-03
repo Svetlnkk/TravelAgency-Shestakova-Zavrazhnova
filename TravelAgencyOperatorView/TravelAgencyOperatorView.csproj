@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="images\yellow-ticket.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.14">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -17,6 +21,10 @@
     <ProjectReference Include="..\TravelAgencyBusinessLogic\TravelAgencyBusinessLogic.csproj" />
     <ProjectReference Include="..\TravelAgencyContracts\TravelAgencyContracts.csproj" />
     <ProjectReference Include="..\TravelAgencyDatabaseImplements\TravelAgencyDatabaseImplements.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="images\yellow-ticket.jpg" />
   </ItemGroup>
 
 </Project>

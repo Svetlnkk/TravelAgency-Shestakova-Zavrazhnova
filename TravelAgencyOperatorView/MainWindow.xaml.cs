@@ -24,5 +24,30 @@ namespace TravelAgencyOperatorView
         {
             InitializeComponent();
         }
+
+        private void Guides_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Tours_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Stops_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ReportExcursionsbyTours_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ReportGuides_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

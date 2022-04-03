@@ -15,10 +15,12 @@ namespace TravelAgencyDatabaseImplements.Models
         public string GuideName { get; set; }
         [Required]
         public int Cost { get; set; }
+        [Required]
+        public DateTime Date { get; set; }
         public string OperatorLogin { get; set; }
         [ForeignKey("GuideId")]
-        public virtual List<TourGuide> ToursGuides { get; set; }
+        public virtual List<GuideTour> GuideTours { get; set; }
         [ForeignKey("GuideId")]
-        public virtual List<ExcursionGuide> ExcursionsGuides { get; set; }
+        public virtual List<GuideExcursion> GuideExcursions { get; set; }
     }
 }

@@ -10,8 +10,8 @@ namespace TravelAgencyContracts.BindingModels
     {
         public int? Id { get; set; }
         public string StopName { get; set; }
-        public DateTime? CheckinDateStop { get; set; }
-        public DateTime? DateofDepatureStop { get; set; }
+        public DateTime CheckinDateStop { get; set; }
+        public DateTime DateofDepatureStop { get; set; }
         public string OperatorLogin { get; set; }
         public int StopTour { get; set; }
     }

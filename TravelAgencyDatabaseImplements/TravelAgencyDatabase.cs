@@ -15,14 +15,14 @@ namespace TravelAgencyDatabaseImplements
             base.OnConfiguring(optionsBuilder);
         }
         public virtual DbSet<Excursion> Excursions { get; set; }
-        public virtual DbSet<ExcursionGuide> ExcursionGuides { get; set; }
+        public virtual DbSet<GuideExcursion> GuideExcursions { get; set; }
         public virtual DbSet<ExcursionTour> ExcursionTours { get; set; }
         public virtual DbSet<Guide> Guides { get; set; }
         public virtual DbSet<Operator> Operators { get; set; }
         public virtual DbSet<Place> Places { get; set; }
         public virtual DbSet<Stop> Stops { get; set; }
         public virtual DbSet<Tour> Tours { get; set; }
-        public virtual DbSet<TourGuide> TourGuides { get; set; }
+        public virtual DbSet<GuideTour> GuideTours { get; set; }
         public virtual DbSet<Tourist> Tourists { get; set; }
         public virtual DbSet<Trip> Trips { get; set; }
         public virtual DbSet<TripExcursions> TripExcursions { get; set; }

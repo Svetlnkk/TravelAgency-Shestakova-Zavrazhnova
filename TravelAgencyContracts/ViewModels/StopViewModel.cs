@@ -16,5 +16,7 @@ namespace TravelAgencyContracts.ViewModels
         public DateTime CheckinDateStop { get; set; }
         [DisplayName("Дата выезда")]
         public DateTime DateofDepatureStop { get; set; }
+        public string OperatorLogin { get; set; }
+        public int StopTour { get; set; }
     }
 }
