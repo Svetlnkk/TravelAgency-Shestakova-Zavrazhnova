@@ -19,7 +19,14 @@ namespace TravelAgencyBusinessLogic.BusinessLogics
         }
         public void Create(TouristBindingModel model)
         {
-            touristStorage.Insert(model);
+            if (!touristStorage.Registered(model))
+            {
+                touristStorage.Insert(model);
+            }
+            else
+            {
+                throw new Exception("Работник с таким логином или почтой уже существует");
+            }
         }
         public Boolean Login(TouristBindingModel model)
         {

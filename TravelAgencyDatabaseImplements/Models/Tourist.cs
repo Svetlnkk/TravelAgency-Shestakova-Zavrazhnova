@@ -15,5 +15,15 @@ namespace TravelAgencyDatabaseImplements.Models
         public string Login { get; set; }
         [Required]
         public string Password { get; set; }
+        [Required]
+        public string Email { get; set; }
+        [Required]
+        public string Name { get; set; }
+        [ForeignKey("TouristLogin")]
+        public virtual List<Excursion> Excursions { get; set; }
+        [ForeignKey("TouristLogin")]
+        public virtual List<Trip> Trips { get; set; }
+        [ForeignKey("TouristLogin")]
+        public virtual List<Place> Places { get; set; }
     }
 }

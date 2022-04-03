@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TravelAgencyDatabaseImplements;
 
 namespace TravelAgencyDatabaseImplements.Migrations
 {
     [DbContext(typeof(TravelAgencyDatabase))]
-    partial class TravelAgencyDatabaseModelSnapshot : ModelSnapshot
+    [Migration("20220403163316_AddEmailandNameTourist")]
+    partial class AddEmailandNameTourist
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
