@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace TravelAgencyDatabaseImplements.Implements
 {
-    class TourStorage : ITourStorage
+    public class TourStorage : ITourStorage
     {
         public List<TourViewModel> GetFullList()
         {
