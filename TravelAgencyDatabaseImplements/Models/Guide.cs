@@ -18,8 +18,7 @@ namespace TravelAgencyDatabaseImplements.Models
         [Required]
         public DateTime Date { get; set; }
         public string OperatorLogin { get; set; }
-        [ForeignKey("GuideId")]
-        public virtual List<GuideTour> GuideTours { get; set; }
+        
         [ForeignKey("GuideId")]
         public virtual List<GuideExcursion> GuideExcursions { get; set; }
     }

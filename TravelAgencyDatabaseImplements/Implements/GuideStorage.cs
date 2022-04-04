@@ -17,7 +17,7 @@ namespace TravelAgencyDatabaseImplements.Implements
         {
             using (var context = new TravelAgencyDatabase())
             {
-                return context.Guides.Include(rec => rec.GuideExcursions).Include(rec => rec.GuideTours).Where(rec => rec.OperatorLogin == OperatorStorage.AutorizedOperator).Select(CreateModel).ToList();
+                return context.Guides.Include(rec => rec.GuideExcursions).Where(rec => rec.OperatorLogin == OperatorStorage.AutorizedOperator).Select(CreateModel).ToList();
             }
         }
         public List<GuideViewModel> GetFilteredList(GuideBindingModel model)
@@ -28,7 +28,7 @@ namespace TravelAgencyDatabaseImplements.Implements
             }
             using (var context = new TravelAgencyDatabase())
             {
-                return context.Guides.Include(rec => rec.GuideExcursions).Include(rec => rec.GuideTours).Where(rec => rec.Id == model.Id && rec.OperatorLogin == OperatorStorage.AutorizedOperator ||
+                return context.Guides.Include(rec => rec.GuideExcursions).Where(rec => rec.Id == model.Id && rec.OperatorLogin == OperatorStorage.AutorizedOperator ||
                     rec.Date > model.after && rec.Date < model.before && rec.OperatorLogin == OperatorStorage.AutorizedOperator).Select(CreateModel).ToList();
             }
         }
@@ -40,7 +40,7 @@ namespace TravelAgencyDatabaseImplements.Implements
             }
             using (var context = new TravelAgencyDatabase())
             {
-                var guide = context.Guides.Include(rec => rec.GuideExcursions).Include(rec => rec.GuideTours).Where(rec => rec.OperatorLogin == OperatorStorage.AutorizedOperator).FirstOrDefault(rec => rec.Id == model.Id);
+                var guide = context.Guides.Include(rec => rec.GuideExcursions).Where(rec => rec.OperatorLogin == OperatorStorage.AutorizedOperator).FirstOrDefault(rec => rec.Id == model.Id);
                 return guide != null ? CreateModel(guide) : null;
             }
         }
@@ -113,34 +113,7 @@ namespace TravelAgencyDatabaseImplements.Implements
                 }
             }
         }
-        public void AddTour((int, (int, int)) addTour)
-        {
-            using (var context = new TravelAgencyDatabase())
-            {
-                using (var transaction = context.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        if (context.GuideTours.FirstOrDefault(rec => rec.GuideId == addTour.Item1 && rec.TourId == addTour.Item2.Item1) != null)
-                        {
-                            var guideTour = context.GuideTours.FirstOrDefault(rec => rec.GuideId == addTour.Item1 && rec.TourId == addTour.Item2.Item1);
-                            guideTour.TourCount = addTour.Item2.Item2;
-                        }
-                        else
-                        {
-                            context.GuideTours.Add(new GuideTour { GuideId = addTour.Item1, TourId = addTour.Item2.Item1, TourCount = addTour.Item2.Item2 });
-                        }
-                        context.SaveChanges();
-                        transaction.Commit();
-                    }
-                    catch
-                    {
-                        transaction.Rollback();
-                        throw;
-                    }
-                }
-            }
-        }
+        
         private static Guide CreateModel(GuideBindingModel model, Guide guide, TravelAgencyDatabase context)
         {
             guide.GuideName = model.GuideName;
@@ -180,8 +153,7 @@ namespace TravelAgencyDatabaseImplements.Implements
                 GuideName = guide.GuideName,
                 Cost = guide.Cost,
                 OperatorLogin = guide.OperatorLogin,
-                GuideExcursions = guide.GuideExcursions.ToDictionary(rec => rec.ExcursionId, rec => rec.ExcursionCount),
-                GuideTours = guide.GuideTours.ToDictionary(rec => rec.TourId, rec => rec.TourCount)
+                GuideExcursions = guide.GuideExcursions.ToDictionary(rec => rec.ExcursionId, rec => rec.ExcursionCount)                
             };
         }
     }

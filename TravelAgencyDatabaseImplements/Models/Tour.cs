@@ -14,6 +14,8 @@ namespace TravelAgencyDatabaseImplements.Models
         [Required]
         public string TourName { get; set; }
         public string OperatorLogin { get; set; }
+        [ForeignKey("GuideId")]
+        public virtual List<TourGuide> TourGuides { get; set; }
         [ForeignKey("TourId")]
         public virtual List<ExcursionTour> ExcursionTours { get; set; }
     }

@@ -13,6 +13,7 @@ namespace TravelAgencyContracts.ViewModels
         [DisplayName("Название тура")]
         public string TourName { get; set; }
         public string OperatorLogin { get; set; }
+        public Dictionary<int, int> TourGuides { get; set; }
         override
         public string ToString()
         {

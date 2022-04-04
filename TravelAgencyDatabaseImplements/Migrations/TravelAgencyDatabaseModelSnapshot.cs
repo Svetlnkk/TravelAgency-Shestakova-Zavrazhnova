@@ -123,31 +123,6 @@ namespace TravelAgencyDatabaseImplements.Migrations
                     b.ToTable("GuideExcursions");
                 });
 
-            modelBuilder.Entity("TravelAgencyDatabaseImplements.Models.GuideTour", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("GuideId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TourCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TourId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GuideId");
-
-                    b.HasIndex("TourId");
-
-                    b.ToTable("GuideTours");
-                });
-
             modelBuilder.Entity("TravelAgencyDatabaseImplements.Models.Operator", b =>
                 {
                     b.Property<string>("Login")
@@ -236,6 +211,34 @@ namespace TravelAgencyDatabaseImplements.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tours");
+                });
+
+            modelBuilder.Entity("TravelAgencyDatabaseImplements.Models.TourGuide", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("GuideCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GuideId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GuideId1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuideId");
+
+                    b.HasIndex("GuideId1");
+
+                    b.ToTable("TourGuides");
                 });
 
             modelBuilder.Entity("TravelAgencyDatabaseImplements.Models.Tourist", b =>
@@ -362,25 +365,6 @@ namespace TravelAgencyDatabaseImplements.Migrations
                     b.Navigation("Guide");
                 });
 
-            modelBuilder.Entity("TravelAgencyDatabaseImplements.Models.GuideTour", b =>
-                {
-                    b.HasOne("TravelAgencyDatabaseImplements.Models.Guide", "Guide")
-                        .WithMany("GuideTours")
-                        .HasForeignKey("GuideId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TravelAgencyDatabaseImplements.Models.Tour", "Tour")
-                        .WithMany()
-                        .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Guide");
-
-                    b.Navigation("Tour");
-                });
-
             modelBuilder.Entity("TravelAgencyDatabaseImplements.Models.Place", b =>
                 {
                     b.HasOne("TravelAgencyDatabaseImplements.Models.Excursion", "Excursion")
@@ -399,6 +383,25 @@ namespace TravelAgencyDatabaseImplements.Migrations
                         .HasForeignKey("TourId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Tour");
+                });
+
+            modelBuilder.Entity("TravelAgencyDatabaseImplements.Models.TourGuide", b =>
+                {
+                    b.HasOne("TravelAgencyDatabaseImplements.Models.Tour", "Tour")
+                        .WithMany("TourGuides")
+                        .HasForeignKey("GuideId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TravelAgencyDatabaseImplements.Models.Guide", "Guide")
+                        .WithMany()
+                        .HasForeignKey("GuideId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Guide");
 
                     b.Navigation("Tour");
                 });
@@ -449,13 +452,13 @@ namespace TravelAgencyDatabaseImplements.Migrations
             modelBuilder.Entity("TravelAgencyDatabaseImplements.Models.Guide", b =>
                 {
                     b.Navigation("GuideExcursions");
-
-                    b.Navigation("GuideTours");
                 });
 
             modelBuilder.Entity("TravelAgencyDatabaseImplements.Models.Tour", b =>
                 {
                     b.Navigation("ExcursionTours");
+
+                    b.Navigation("TourGuides");
                 });
 
             modelBuilder.Entity("TravelAgencyDatabaseImplements.Models.Trip", b =>

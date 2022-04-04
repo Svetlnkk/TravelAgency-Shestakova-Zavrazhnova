@@ -8,7 +8,7 @@ using TravelAgencyContracts.StoragesContracts;
 using TravelAgencyContracts.BussinessLogicsContracts;
 using TravelAgencyContracts.BindingModels;
 
-namespace TravelAgencyBusinessLogic.BusinessLogics
+namespace TravelAgencyBusinessLogic.BusinessLogic
 {
     public class PlaceLogic : IPlaceLogic
     {

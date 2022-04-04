@@ -78,6 +78,34 @@ namespace TravelAgencyDatabaseImplements.Implements
                 }
             }
         }
+        public void AddGuide((int, (int, int)) addGuide)
+        {
+            using (var context = new TravelAgencyDatabase())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        if (context.TourGuides.FirstOrDefault(rec => rec.GuideId == addGuide.Item1 && rec.TourId == addGuide.Item2.Item1) != null)
+                        {
+                            var tourGuide = context.TourGuides.FirstOrDefault(rec => rec.GuideId == addGuide.Item1 && rec.TourId == addGuide.Item2.Item1);
+                            tourGuide.GuideCount = addGuide.Item2.Item2;
+                        }
+                        else
+                        {
+                            context.TourGuides.Add(new TourGuide { GuideId = addGuide.Item1, TourId = addGuide.Item2.Item1, GuideCount = addGuide.Item2.Item2 });
+                        }
+                        context.SaveChanges();
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
         private static Tour CreateModel(TourBindingModel model, Tour tour)
         {
             tour.TourName = model.TourName;            
@@ -90,7 +118,8 @@ namespace TravelAgencyDatabaseImplements.Implements
             {
                 Id = tour.Id,
                 TourName = tour.TourName,                
-                OperatorLogin = tour.OperatorLogin
+                OperatorLogin = tour.OperatorLogin,
+                TourGuides = tour.TourGuides.ToDictionary(rec => rec.TourId, rec => rec.GuideCount)
             };
         }
     }

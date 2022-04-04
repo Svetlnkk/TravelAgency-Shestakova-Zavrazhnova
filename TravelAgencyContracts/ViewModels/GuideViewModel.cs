@@ -18,8 +18,7 @@ namespace TravelAgencyContracts.ViewModels
         [DisplayName("Дата")]
         public DateTime Date { get; set; }
         public string OperatorLogin { get; set; }
-        public Dictionary<int, int> GuideExcursions { get; set; }
-        public Dictionary<int, int> GuideTours { get; set; }
+        public Dictionary<int, int> GuideExcursions { get; set; }        
         override
         public string ToString()
         {

@@ -27,17 +27,20 @@ namespace TravelAgencyOperatorView
 
         private void Guides_Click(object sender, RoutedEventArgs e)
         {
-
+            WindowGuides windowGuides = new WindowGuides();
+            windowGuides.ShowDialog();
         }
 
         private void Tours_Click(object sender, RoutedEventArgs e)
         {
-
+           /* WindowTours windowTours = new WindowTours();
+            windowTours.ShowDialog();*/
         }
 
         private void Stops_Click(object sender, RoutedEventArgs e)
         {
-
+           /* WindowStops windowStops = new WindowStops();
+            windowStops.ShowDialog();*/
         }
 
         private void ReportExcursionsbyTours_Click(object sender, RoutedEventArgs e)
