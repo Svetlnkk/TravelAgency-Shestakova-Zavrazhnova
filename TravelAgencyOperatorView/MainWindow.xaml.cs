@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Unity;
 
 namespace TravelAgencyOperatorView
 {
@@ -27,30 +28,32 @@ namespace TravelAgencyOperatorView
 
         private void Guides_Click(object sender, RoutedEventArgs e)
         {
-            WindowGuides windowGuides = new WindowGuides();
+            WindowGuides windowGuides = App.Container.Resolve<WindowGuides>();
             windowGuides.ShowDialog();
         }
 
         private void Tours_Click(object sender, RoutedEventArgs e)
         {
-           /* WindowTours windowTours = new WindowTours();
-            windowTours.ShowDialog();*/
+           WindowTours windowTours = App.Container.Resolve <WindowTours>();
+           windowTours.ShowDialog();
         }
 
         private void Stops_Click(object sender, RoutedEventArgs e)
         {
-           /* WindowStops windowStops = new WindowStops();
-            windowStops.ShowDialog();*/
+           WindowStops windowStops = App.Container.Resolve <WindowStops>();
+           windowStops.ShowDialog();
         }
 
         private void ReportExcursionsbyTours_Click(object sender, RoutedEventArgs e)
         {
-
+            WindowReportTourbyExcursion windowReportTourExc = App.Container.Resolve<WindowReportTourbyExcursion>();
+            windowReportTourExc.ShowDialog();
         }
 
         private void ReportGuides_Click(object sender, RoutedEventArgs e)
         {
-
+            WindowReportGuides windowReportGuide = App.Container.Resolve<WindowReportGuides>();
+            windowReportGuide.ShowDialog();
         }
     }
 }

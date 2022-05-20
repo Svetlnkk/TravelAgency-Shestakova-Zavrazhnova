@@ -1,6 +1,7 @@
 ﻿using TravelAgencyBusinessLogic.BusinessLogic;
 using TravelAgencyDatabaseImplements.Implements;
 using TravelAgencyContracts.BindingModels;
+using TravelAgencyContracts.BussinessLogicsContracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Unity;
 
 namespace TravelAgencyOperatorView
 {
@@ -22,25 +24,46 @@ namespace TravelAgencyOperatorView
     /// </summary>
     public partial class WindowGuide : Window
     {
-        GuideLogic guideLogic = new GuideLogic(new GuideStorage());
+        IGuideLogic guideLogic;
         public int Id { set { id = value; } }
         private int? id;
-        public WindowGuide()
+        public WindowGuide(IGuideLogic guideLogic)
         {
             InitializeComponent();
+            this.guideLogic = guideLogic;
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
+            if (FIOBox.Text == "")
+            {
+                MessageBox.Show("Заполните ФИО", "Ошибка");
+                return;
+            }
             if (CostBox.Text == "" || !int.TryParse(CostBox.Text, out int number))
             {
                 MessageBox.Show("Введите зарплату в виде числа");
                 return;
             }
-            int cost = Convert.ToInt32(CostBox.Text);
-            string fio = FIOBox.Text;
-            guideLogic.CreateOrUpdate(new GuideBindingModel { Id = id, GuideName = fio, Cost = cost });
-            this.Close();
+            try
+            {
+                guideLogic.CreateOrUpdate(new GuideBindingModel
+                {
+                    Id = id,
+                    GuideName = FIOBox.Text,
+                    Cost = Convert.ToDecimal(CostBox.Text),
+                    Date = DateTime.Now,
+                    //OperatorId = Container.Operator.Id
+                });
+                MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButton.OK,
+               MessageBoxImage.Information);
+                DialogResult = true;
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)

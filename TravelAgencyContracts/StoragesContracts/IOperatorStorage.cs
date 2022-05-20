@@ -10,7 +10,9 @@ namespace TravelAgencyContracts.StoragesContracts
 {
    public interface IOperatorStorage
     {
+        bool Registered(OperatorBindingModel model);
         void Insert(OperatorBindingModel model);
         bool Login(OperatorBindingModel model);
+        OperatorBindingModel GetOperatorData(OperatorBindingModel model);
     }
 }

@@ -2,6 +2,7 @@
 using TravelAgencyDatabaseImplements.Implements;
 using TravelAgencyContracts.BindingModels;
 using TravelAgencyContracts.ViewModels;
+using TravelAgencyContracts.BussinessLogicsContracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,11 +24,13 @@ namespace TravelAgencyOperatorView
     /// </summary>
     public partial class WindowBindingExcursions : Window
     {
-        GuideLogic guideLogic = new GuideLogic(new GuideStorage());
-        ExcursionLogic excursionLogic/* = new ExcursionLogic(new ExcursionStorage())*/;
-        public WindowBindingExcursions()
+        private readonly IGuideLogic guideLogic;
+        private readonly IExcursionLogic excursionLogic;
+        public WindowBindingExcursions(IGuideLogic guideLogic, IExcursionLogic excursionLogic)
         {
             InitializeComponent();
+            this.guideLogic = guideLogic;
+            this.excursionLogic = excursionLogic;
         }
         private void LoadData()
         {

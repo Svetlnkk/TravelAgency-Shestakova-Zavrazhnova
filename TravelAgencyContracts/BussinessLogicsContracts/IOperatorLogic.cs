@@ -10,6 +10,7 @@ namespace TravelAgencyContracts.BussinessLogicsContracts
 {
     public interface IOperatorLogic
     {
+        OperatorBindingModel GetOperatorData(OperatorBindingModel model);
         void Create(OperatorBindingModel model);
         bool Login(OperatorBindingModel model);
     }

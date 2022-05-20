@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TravelAgencyDatabaseImplements.Models
 {
-    public class GuideExcursion
+    public class ExcursionGuide
     {
         public int Id { get; set; }
         public int ExcursionId { get; set; }

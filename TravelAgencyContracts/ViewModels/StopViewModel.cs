@@ -10,13 +10,15 @@ namespace TravelAgencyContracts.ViewModels
     public class StopViewModel
     {
         public int Id { get; set; }
+        public int TourId { get; set; }
         [DisplayName("Название остановки")]
         public string StopName { get; set; }
         [DisplayName("Дата заезда")]
         public DateTime CheckinDateStop { get; set; }
         [DisplayName("Дата выезда")]
         public DateTime DateofDepatureStop { get; set; }
-        public string OperatorLogin { get; set; }
-        public int StopTour { get; set; }
+        [DisplayName("Тур")]
+        public string TourName{get; set;}
+        
     }
 }

@@ -17,8 +17,10 @@ namespace TravelAgencyDatabaseImplements.Models
         public DateTime CheckinDateStop { get; set; }
         [Required]
         public DateTime DateofDepatureStop { get; set; }
-        public string OperatorLogin { get; set; }
+        public String OperatorLogin { get; set; }
+        public virtual Operator Operator { get; set; }
         public int TourId { get; set; }
         public virtual Tour Tour { get; set; }
+               
     }
 }

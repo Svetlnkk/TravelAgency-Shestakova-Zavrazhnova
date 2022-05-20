@@ -2,6 +2,7 @@
 using TravelAgencyDatabaseImplements.Implements;
 using TravelAgencyContracts.BindingModels;
 using TravelAgencyContracts.ViewModels;
+using TravelAgencyContracts.BussinessLogicsContracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Unity;
 
 namespace TravelAgencyOperatorView
 {
@@ -23,10 +25,11 @@ namespace TravelAgencyOperatorView
     /// </summary>
     public partial class WindowGuides : Window
     {
-        GuideLogic guideLogic = new GuideLogic(new GuideStorage());
-        public WindowGuides()
+        IGuideLogic guideLogic;
+        public WindowGuides(IGuideLogic guideLogic)
         {
             InitializeComponent();
+            this.guideLogic = guideLogic;
         }
         private void LoadData()
         {
@@ -47,8 +50,8 @@ namespace TravelAgencyOperatorView
 
         private void Create_Click(object sender, RoutedEventArgs e)
         {
-            WindowGuide windowGuide = new WindowGuide();
-            windowGuide.ShowDialog();
+            var window = App.Container.Resolve<WindowGuide>();
+            window.ShowDialog();
             LoadData();
         }
 
@@ -71,7 +74,7 @@ namespace TravelAgencyOperatorView
 
         private void BindingExcursion_Click(object sender, RoutedEventArgs e)
         {
-            WindowBindingExcursions windowBindingExcursions = new WindowBindingExcursions();
+            WindowBindingExcursions windowBindingExcursions = App.Container.Resolve<WindowBindingExcursions>();
             windowBindingExcursions.ShowDialog();
         }
 
@@ -88,7 +91,7 @@ namespace TravelAgencyOperatorView
                 return;
             }
             int selecctedGuideId = ((GuideViewModel)GuidesData.SelectedItem).Id;
-            WindowGuide windowGuide = new WindowGuide();
+            WindowGuide windowGuide = App.Container.Resolve<WindowGuide>();
             windowGuide.Id = selecctedGuideId;
             windowGuide.ShowDialog();
             LoadData();

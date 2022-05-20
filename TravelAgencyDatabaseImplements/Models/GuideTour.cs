@@ -7,14 +7,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TravelAgencyDatabaseImplements.Models
 {
-    public class TourGuide
+    public class GuideTour
     {
         public int Id { get; set; }
         public int GuideId { get; set; }
         public int TourId { get; set; }
         [Required]
-        public int GuideCount { get; set; }
-
+        public int TourCount { get; set; }
         public virtual Tour Tour { get; set; }
         public virtual Guide Guide { get; set; }
     }

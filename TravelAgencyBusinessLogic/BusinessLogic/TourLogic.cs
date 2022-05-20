@@ -61,20 +61,6 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
                 throw new Exception("Тур не найден");
             }
             tourStorage.Delete(model);
-        }
-        public void AddGuide((int, (int, int)) addGuide)
-        {
-            var guide = guideStorage.GetElement(new GuideBindingModel { Id = addGuide.Item1 });
-            if (guide == null)
-            {
-                throw new Exception("Гид не найден");
-            }
-            var tour = tourStorage.GetElement(new TourBindingModel { Id = addGuide.Item2.Item1 });
-            if (tour == null)
-            {
-                throw new Exception("Тур не найден");
-            }
-            tourStorage.AddGuide(addGuide);
-        }
+        }        
     }
 }

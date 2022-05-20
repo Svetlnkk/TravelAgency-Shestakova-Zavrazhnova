@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TravelAgencyTouristView"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Программа учета" Height="450" Width="800">
     <Grid>
-
+        <Menu Height="25" VerticalAlignment="Top">
+            <MenuItem Header="Путешествия" Click="TripsClick"></MenuItem>
+            <MenuItem Header="Экскурсии" Click="ExcursionsClick"></MenuItem>
+            <MenuItem Header="Посещенные места" Click="PlacesClick"></MenuItem>
+        </Menu>
     </Grid>
 </Window>

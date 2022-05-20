@@ -14,16 +14,12 @@ namespace TravelAgencyContracts.ViewModels
         [DisplayName("ФИО гида")]
         public string GuideName { get; set; }
         [DisplayName("Стоимость услуги гида")]
-        public int Cost { get; set; }
+        public decimal Cost { get; set; }
         [DisplayName("Дата")]
         public DateTime Date { get; set; }
-        public string OperatorLogin { get; set; }
-        public Dictionary<int, int> GuideExcursions { get; set; }        
-        override
-        public string ToString()
-        {
-            return String.Format(@"ФИО = {0}, Зарплата = {1}, Дата = {2}", GuideName, Cost, Date.ToString("d", CultureInfo.GetCultureInfo("en-US")));
-        }
-
+        [DisplayName("Экскурсии")]
+        public Dictionary<int, (string, string)> GuideExcursions { get; set; }
+        
+        
     }
 }

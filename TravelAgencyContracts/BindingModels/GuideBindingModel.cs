@@ -10,11 +10,11 @@ namespace TravelAgencyContracts.BindingModels
     {
         public int? Id { get; set; }
         public string GuideName { get; set; }
-        public int Cost { get; set; }
-        public DateTime Date { get; set; }
+        public decimal Cost { get; set; }
+        public DateTime Date { get; set; }        
+        public Dictionary<int, int> GuideExcursions { get; set; }
         public string OperatorLogin { get; set; }
-        public Dictionary<int, int> GuideExcursions { get; set; }        
-        public DateTime? after { get; set; }
-        public DateTime? before { get; set; }
+        public DateTime? DateFrom { get; set; }
+        public DateTime? DateTo { get; set; }
     }
 }

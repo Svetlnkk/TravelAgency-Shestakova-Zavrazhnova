@@ -11,6 +11,8 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -20,7 +22,11 @@
         <TextBox Name="LoginTextBox" Grid.Row="0" Grid.Column="1" Margin="0, 10, 10, 10" VerticalContentAlignment="Center"></TextBox>
         <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Пароль:</TextBlock>
         <PasswordBox Name="PasswordTextBox" Grid.Row="1" Grid.Column="1" Margin="0, 10, 10, 10" VerticalContentAlignment="Center"></PasswordBox>
-        <Button Grid.Row="2" Grid.Column="0" Click="Registration_Click" Margin="5" Style="{StaticResource MyButtonStyle}">Зарегистрировать</Button>
-        <Button Grid.Row="2" Grid.Column="1" Click="Cancel_Click" Margin="5" Style="{StaticResource MyButtonStyle}">Отмена</Button>
+        <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Email:</TextBlock>
+        <TextBox Name="EmailTextBox" Grid.Row="2" Grid.Column="1" Margin="0, 10, 10, 10" VerticalContentAlignment="Center"></TextBox>
+        <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5">Имя:</TextBlock>
+        <TextBox Name="NameTextBox" Grid.Row="3" Grid.Column="1" Margin="0, 10, 10, 10" VerticalContentAlignment="Center"></TextBox>
+        <Button Grid.Row="4" Grid.Column="0" Click="Registration_Click" Margin="5" Style="{StaticResource MyButtonStyle}">Зарегистрировать</Button>
+        <Button Grid.Row="4" Grid.Column="1" Click="Cancel_Click" Margin="5" Style="{StaticResource MyButtonStyle}">Отмена</Button>
     </Grid>
 </Window>

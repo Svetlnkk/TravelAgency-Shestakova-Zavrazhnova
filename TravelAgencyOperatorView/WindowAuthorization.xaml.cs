@@ -1,6 +1,7 @@
 ﻿using TravelAgencyBusinessLogic.BusinessLogic;
 using TravelAgencyDatabaseImplements.Implements;
 using TravelAgencyContracts.BindingModels;
+using TravelAgencyContracts.BussinessLogicsContracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Unity;
 
 namespace TravelAgencyOperatorView
 {
@@ -22,10 +24,12 @@ namespace TravelAgencyOperatorView
     /// </summary>
     public partial class WindowAuthorization : Window
     {
-        OperatorLogic operatorLogic = new OperatorLogic(new OperatorStorage());
-        public WindowAuthorization()
+        public static string AutorizedOperator { get; private set; }
+        private readonly IOperatorLogic operatorLogic;
+        public WindowAuthorization(IOperatorLogic operatorLogic)
         {
             InitializeComponent();
+            this.operatorLogic = operatorLogic;
         }
 
         private void Autorized_Click(object sender, RoutedEventArgs e)
@@ -39,13 +43,13 @@ namespace TravelAgencyOperatorView
             }
             if (operatorLogic.Login(new OperatorBindingModel { Login = login, Password = password }))
             {
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
-                this.Close();
+                AutorizedOperator = login;
+                MainWindow mainWindow = App.Container.Resolve<MainWindow>();
+                mainWindow.Show();                
             }
             else
             {
-                MessageBox.Show("Неверный логин или пароль");
+                MessageBox.Show("Пользователь не существует или пароль введен не верно");
                 return;
             }
         }
@@ -57,7 +61,7 @@ namespace TravelAgencyOperatorView
 
         private void Registration_Click(object sender, RoutedEventArgs e)
         {
-            WindowRegistration windowRegistration = new WindowRegistration();
+            WindowRegistration windowRegistration = App.Container.Resolve <WindowRegistration>();
             windowRegistration.ShowDialog();
         }
     }

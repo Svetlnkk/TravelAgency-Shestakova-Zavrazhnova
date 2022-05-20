@@ -7,29 +7,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace TravelAgencyDatabaseImplements.Implements
 {
-    class TourStorage : ITourStorage
+    public class TourStorage : ITourStorage
     {
-        public List<TourViewModel> GetFullList()
+        public void Delete(TourBindingModel model)
         {
-            using (var context = new TravelAgencyDatabase())
+            using var context = new TravelAgencyDatabase();
+            Tour element = context.Tours.FirstOrDefault(rec => rec.Id ==
+            model.Id);
+            if (element != null)
             {
-                return context.Tours.Where(rec => rec.OperatorLogin == OperatorStorage.AutorizedOperator).Select(CreateModel).ToList();
+                context.Tours.Remove(element);
+                context.SaveChanges();
             }
+            else
+            {
+                throw new Exception("Элемент не найден");
+            }
+
         }
-        public List<TourViewModel> GetFilteredList(TourBindingModel model)
-        {
-            if (model == null)
-            {
-                return null;
-            }
-            using (var context = new TravelAgencyDatabase())
-            {
-                return context.Tours.Where(rec => rec.TourName == model.TourName && rec.OperatorLogin == OperatorStorage.AutorizedOperator).Select(CreateModel).ToList();
-            }
-        }
+
         public TourViewModel GetElement(TourBindingModel model)
         {
             if (model == null)
@@ -37,89 +37,123 @@ namespace TravelAgencyDatabaseImplements.Implements
                 return null;
             }
             using var context = new TravelAgencyDatabase();
-            var tour = context.Tours.Where(rec => rec.OperatorLogin == OperatorStorage.AutorizedOperator).FirstOrDefault(rec => rec.Id == model.Id);
+            var tour = context.Tours            
+            .Include(rec => rec.TourGuides)            
+            .FirstOrDefault(rec => rec.TourName == model.TourName ||
+            rec.Id == model.Id);
             return tour != null ? CreateModel(tour) : null;
         }
+
+        public List<TourViewModel> GetFilteredList(TourBindingModel model)
+        {
+            if (model == null)
+            {
+                return null;
+            }
+            using var context = new TravelAgencyDatabase();
+            return context.Tours
+            .Include(rec => rec.TourGuides)            
+            .Where(rec => rec.TourName.Contains(model.TourName))
+            .ToList()
+            .Select(CreateModel)
+            .ToList();
+        }
+
+        public List<TourViewModel> GetFullList()
+        {
+            using var context = new TravelAgencyDatabase();
+            return context.Tours
+            .Include(rec => rec.TourGuides)
+            .ThenInclude(rec => rec.Guide)
+            .ToList()
+            .Select(CreateModel)
+            .ToList();
+        }
+
         public void Insert(TourBindingModel model)
         {
-            using (var context = new TravelAgencyDatabase())
+            using var context = new TravelAgencyDatabase();
+            using var transaction = context.Database.BeginTransaction();
+            try
             {
-                model.OperatorLogin = OperatorStorage.AutorizedOperator;
-                context.Tours.Add(CreateModel(model, new Tour()));
+                Tour tour = new Tour()
+                {
+                    TourName = model.TourName,                    
+                    OperatorLogin = model.OperatorLogin
+                };
+                context.Tours.Add(tour);
                 context.SaveChanges();
+                CreateModel(model, tour, context);
+                transaction.Commit();
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
             }
         }
+
         public void Update(TourBindingModel model)
         {
-            using (var context = new TravelAgencyDatabase())
+            using var context = new TravelAgencyDatabase();
+            using var transaction = context.Database.BeginTransaction();
+            try
             {
-                var element = context.Tours.Where(rec => rec.OperatorLogin == OperatorStorage.AutorizedOperator).FirstOrDefault(rec => rec.Id == model.Id);
+                var element = context.Tours.FirstOrDefault(rec => rec.Id ==
+                model.Id);
                 if (element == null)
                 {
                     throw new Exception("Элемент не найден");
                 }
-                CreateModel(model, element);
+                CreateModel(model, element, context);
                 context.SaveChanges();
+                transaction.Commit();
             }
-        }
-        public void Delete(TourBindingModel model)
-        {
-            using (var context = new TravelAgencyDatabase())
+            catch
             {
-                Tour element = context.Tours.Where(rec => rec.OperatorLogin == OperatorStorage.AutorizedOperator).FirstOrDefault(rec => rec.Id == model.Id);
-                if (element != null)
-                {
-                    context.Tours.Remove(element);
-                    context.SaveChanges();
-                }
-                else
-                {
-                    throw new Exception("Элемент не найден");
-                }
+                transaction.Rollback();
+                throw;
             }
         }
-        public void AddGuide((int, (int, int)) addGuide)
-        {
-            using (var context = new TravelAgencyDatabase())
-            {
-                using (var transaction = context.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        if (context.TourGuides.FirstOrDefault(rec => rec.GuideId == addGuide.Item1 && rec.TourId == addGuide.Item2.Item1) != null)
-                        {
-                            var tourGuide = context.TourGuides.FirstOrDefault(rec => rec.GuideId == addGuide.Item1 && rec.TourId == addGuide.Item2.Item1);
-                            tourGuide.GuideCount = addGuide.Item2.Item2;
-                        }
-                        else
-                        {
-                            context.TourGuides.Add(new TourGuide { GuideId = addGuide.Item1, TourId = addGuide.Item2.Item1, GuideCount = addGuide.Item2.Item2 });
-                        }
-                        context.SaveChanges();
-                        transaction.Commit();
-                    }
-                    catch
-                    {
-                        transaction.Rollback();
-                        throw;
-                    }
-                }
-            }
-        }
-        private static Tour CreateModel(TourBindingModel model, Tour tour)
+        private static Tour CreateModel(TourBindingModel model, Tour tour, TravelAgencyDatabase context)
         {
             tour.TourName = model.TourName;            
-            tour.OperatorLogin = OperatorStorage.AutorizedOperator;
+            if (model.Id.HasValue)
+            {
+                var lpGuides = context.TourGuides.Where(rec =>
+                rec.TourId == model.Id.Value).ToList();
+                // удалили те, которых нет в модели
+                context.TourGuides.RemoveRange(lpGuides.Where(rec =>
+                !model.TourGuides.ContainsKey(rec.GuideId)).ToList());
+                context.SaveChanges();
+                // обновили количество у существующих записей
+                foreach (var updateIngredient in lpGuides)
+                {
+                    model.TourGuides.Remove(updateIngredient.GuideId);
+                }
+                context.SaveChanges();
+            }
+            foreach (var wi in model.TourGuides)
+            {
+                context.TourGuides.Add(new GuideTour
+                {
+                    TourId = tour.Id,
+                    GuideId = wi.Key,
+                });
+                context.SaveChanges();
+            }
             return tour;
         }
+
         private static TourViewModel CreateModel(Tour tour)
         {
             return new TourViewModel
             {
                 Id = tour.Id,
-                TourName = tour.TourName,                
-                OperatorLogin = tour.OperatorLogin,
-                TourGuides = tour.TourGuides.ToDictionary(rec => rec.TourId, rec => rec.GuideCount)
+                TourName = tour.TourName,
+                TourGuides = tour.TourGuides
+            .ToDictionary(recII => recII.GuideId,
+            recII => (recII.Guide?.GuideName, recII.Guide.Cost))
             };
         }
     }
