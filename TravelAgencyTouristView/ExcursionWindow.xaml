@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TravelAgencyTouristView"
         mc:Ignorable="d"
-        Title="Экскурсия" Height="190" Width="260" MinHeight="150" MinWidth="220" Loaded="ExcursionWindowLoad">
+        Title="Экскурсия" Height="241" Width="272" MinHeight="150" MinWidth="220" Loaded="ExcursionWindowLoad">
     <Grid Margin="0,0,0,8">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>

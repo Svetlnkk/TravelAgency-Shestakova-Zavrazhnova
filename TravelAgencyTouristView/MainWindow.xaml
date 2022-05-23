@@ -11,6 +11,8 @@
             <MenuItem Header="Путешествия" Click="TripsClick"></MenuItem>
             <MenuItem Header="Экскурсии" Click="ExcursionsClick"></MenuItem>
             <MenuItem Header="Посещенные места" Click="PlacesClick"></MenuItem>
+            <MenuItem Header="Получение списка" Click="ReportGuidesbyTripsClick"></MenuItem>
+            <MenuItem Header="Отчет" Click="ReportTripsClick"></MenuItem>
         </Menu>
     </Grid>
 </Window>

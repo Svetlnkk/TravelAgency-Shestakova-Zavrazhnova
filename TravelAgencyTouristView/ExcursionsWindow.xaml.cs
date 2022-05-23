@@ -37,7 +37,7 @@ namespace TravelAgencyTouristView
             {
                 ExcursionsData.ItemsSource = list;
                 ExcursionsData.Columns[0].Visibility = Visibility.Hidden;
-                ExcursionsData.Columns[3].Visibility = Visibility.Hidden;
+                ExcursionsData.Columns[5].Visibility = Visibility.Hidden;
                 ExcursionsData.Columns[1].Header = "Название";
                 ExcursionsData.Columns[2].Header = "Тип";
                 ExcursionsData.Columns[3].Header = "Продолжительность";
