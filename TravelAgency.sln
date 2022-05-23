@@ -7,11 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelAgencyBusinessLogic",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelAgencyDatabaseImplements", "TravelAgencyDatabaseImplements\TravelAgencyDatabaseImplements.csproj", "{637C0A3D-4159-4228-BFDD-4B5FC4DF4BF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelAgencyContracts", "TravelAgencyContracts\TravelAgencyContracts.csproj", "{262C01B8-DEC2-4084-A68E-0BB520650BF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelAgencyContracts", "TravelAgencyContracts\TravelAgencyContracts.csproj", "{262C01B8-DEC2-4084-A68E-0BB520650BF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelAgencyTouristView", "TravelAgencyTouristView\TravelAgencyTouristView.csproj", "{C35D7865-306F-46E2-ADED-B5CCE8015119}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelAgencyTouristView", "TravelAgencyTouristView\TravelAgencyTouristView.csproj", "{C35D7865-306F-46E2-ADED-B5CCE8015119}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelAgencyOperatorView", "TravelAgencyOperatorView\TravelAgencyOperatorView.csproj", "{7E14BBAA-C18A-488C-986B-3CEDD72A1A8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelAgencyOperatorView", "TravelAgencyOperatorView\TravelAgencyOperatorView.csproj", "{7E14BBAA-C18A-488C-986B-3CEDD72A1A8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelAgencyRestApi", "TravelAgencyRestApi\TravelAgencyRestApi.csproj", "{622BA0BE-6A3F-406F-9133-24FA405704D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{7E14BBAA-C18A-488C-986B-3CEDD72A1A8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E14BBAA-C18A-488C-986B-3CEDD72A1A8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E14BBAA-C18A-488C-986B-3CEDD72A1A8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{622BA0BE-6A3F-406F-9133-24FA405704D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{622BA0BE-6A3F-406F-9133-24FA405704D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{622BA0BE-6A3F-406F-9133-24FA405704D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{622BA0BE-6A3F-406F-9133-24FA405704D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
