@@ -14,5 +14,6 @@ namespace TravelAgencyContracts.BindingModels
         public double Time { get; set; }
         public int Price { get; set; }
         public string TouristLogin { get; set; }
+        public string OperatorLogin { get; set; }
     }
 }

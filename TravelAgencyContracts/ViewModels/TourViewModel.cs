@@ -12,7 +12,12 @@ namespace TravelAgencyContracts.ViewModels
         public int Id { get; set; }
         [DisplayName("Название тура")]
         public string TourName { get; set; }
-        [DisplayName("Гиды")]
-        public Dictionary<int, (string, decimal)> TourGuides { get; set; }      
+        public string OperatorLogin { get; set; }
+        public Dictionary<int, int> GuideTours { get; set; }
+        override
+        public string ToString()
+        {
+            return String.Format(@"Id = {0}, Название тура = {1} ", Id, TourName);
+        }
     }
 }

@@ -2,6 +2,7 @@
 using TravelAgencyDatabaseImplements.Implements;
 using TravelAgencyContracts.BindingModels;
 using TravelAgencyContracts.ViewModels;
+using TravelAgencyContracts.BussinessLogicsContracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,10 +25,11 @@ namespace TravelAgencyOperatorView
     /// </summary>
     public partial class WindowTours : Window
     {
-        TourLogic tourLogic = new TourLogic(new TourStorage(), new GuideStorage());
-        public WindowTours()
+        private readonly ITourLogic tourLogic;
+        public WindowTours(ITourLogic tourLogic)
         {
             InitializeComponent();
+            this.tourLogic = tourLogic;
         }
         private void LoadData()
         {
@@ -36,8 +38,7 @@ namespace TravelAgencyOperatorView
             {
                 ToursData.ItemsSource = list;
                 ToursData.Columns[0].Visibility = Visibility.Hidden;
-                ToursData.Columns[2].Visibility = Visibility.Hidden;
-                ToursData.Columns[3].Visibility = Visibility.Hidden;
+                ToursData.Columns[2].Visibility = Visibility.Hidden;                
                 ToursData.Columns[1].Header = "Название тура";
                 ToursData.SelectedItem = null;
             }

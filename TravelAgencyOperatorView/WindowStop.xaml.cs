@@ -24,8 +24,8 @@ namespace TravelAgencyOperatorView
     /// </summary>
     public partial class WindowStop : Window
     {
-        IStopLogic stopLogic;
-        ITourLogic tourLogic;
+        private readonly IStopLogic stopLogic;
+        private readonly ITourLogic tourLogic;
         public int Id { set { id = value; } }
         private int? id;
         public WindowStop(IStopLogic stopLogic, ITourLogic tourLogic)
@@ -68,7 +68,7 @@ namespace TravelAgencyOperatorView
                 return;
             }
             if (DatePickerCheckin.SelectedDate == null || DatePickerDepatureof.SelectedDate == null ||
-                DatePickerDepatureof.SelectedDate >= DatePickerCheckin.SelectedDate)
+                DatePickerDepatureof.SelectedDate <= DatePickerCheckin.SelectedDate)
             {
                 MessageBox.Show("Дата заезда должна быть меньше даты выезда", "Ошибка");
                 return;

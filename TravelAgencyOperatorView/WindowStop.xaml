@@ -19,8 +19,8 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10">Название:</TextBlock>
-        <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10">Выберите дату заезда:</TextBlock>
-        <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10">Выберите дату выезда:</TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10">Выберите дату начала:</TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10">Выберите дату окончания:</TextBlock>
         <TextBox Name="NameBox" Grid.Column="1" Grid.Row="0" VerticalContentAlignment="Center" Margin="10"></TextBox>
         <DatePicker Grid.Column="3" Grid.Row="1" Name="DatePickerCheckin" Margin="10"></DatePicker>
         <DatePicker Grid.Column="3" Grid.Row="1" Name="DatePickerDepatureof" VerticalAlignment="Bottom" Margin="10"></DatePicker>

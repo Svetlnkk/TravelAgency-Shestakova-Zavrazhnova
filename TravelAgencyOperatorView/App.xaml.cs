@@ -55,7 +55,7 @@ namespace TravelAgencyOperatorView
             currentContainer.RegisterType<ITripLogic, TripLogic>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<IExcursionLogic, ExcursionLogic>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<ITourLogic, TourLogic>(new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IReportLogic, ReportLogic>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IReportOperatorLogic, ReportOperatorLogic>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<IOperatorLogic, OperatorLogic>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<AbstractSaveToPdf, SaveToPdf>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<AbstractSaveToExcel, SaveToExcel>(new HierarchicalLifetimeManager());

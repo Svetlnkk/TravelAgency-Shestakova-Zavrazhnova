@@ -13,122 +13,164 @@ namespace TravelAgencyDatabaseImplements.Implements
 {
     public class GuideStorage : IGuideStorage
     {
-        public void Delete(GuideBindingModel model)
+        public List<GuideViewModel> GetFullList()
         {
-            using var context = new TravelAgencyDatabase();
-            Guide element = context.Guides.FirstOrDefault(rec => rec.Id == model.Id);
-            if (element != null)
+            using (var context = new TravelAgencyDatabase())
             {
-                context.Guides.Remove(element);
-                context.SaveChanges();
-            }
-            else
-            {
-                throw new Exception("Элемент не найден");
+                return context.Guides
+                .Include(rec => rec.ExcursionGuides).Include(rec => rec.TourGuides)
+                .Select(CreateModel)
+                .ToList();
             }
         }
-
-        public GuideViewModel GetElement(GuideBindingModel model)
-        {
-            if (model == null)
-            {
-                return null;
-            }
-            using var context = new TravelAgencyDatabase();
-            var guide = context.Guides
-            .Include(rec => rec.TourGuides)
-            .Include(rec => rec.ExcursionGuides)      
-            .Include(rec => rec.Operator)
-            .FirstOrDefault(rec => rec.GuideName == model.GuideName || rec.Id == model.Id);
-            return guide != null ? CreateModel(guide) : null;
-        }
-
         public List<GuideViewModel> GetFilteredList(GuideBindingModel model)
         {
             if (model == null)
             {
                 return null;
             }
-            using var context = new TravelAgencyDatabase();
-
-            return context.Guides            
-            .Where(rec => (!model.DateFrom.HasValue && !model.DateTo.HasValue && rec.Date.Date == model.Date.Date) ||
-            (model.DateFrom.HasValue && model.DateTo.HasValue && rec.Date.Date >= model.DateFrom.Value.Date && rec.Date.Date <= model.DateTo.Value.Date) ||
-            (!String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin))            
-            .Select(CreateModel)
-            .ToList();
+            using (var context = new TravelAgencyDatabase())
+            {
+                if(model.DateFrom.HasValue && model.DateTo.HasValue)
+                {
+                    return context.Guides.Include(rec => rec.ExcursionGuides).Include(rec => rec.TourGuides)
+                .Where(rec => rec.Date > model.DateFrom && rec.Date < model.DateTo &&
+                !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                .Select(CreateModel)
+                .ToList();
+                }
+                else
+                {
+                    return context.Guides.Include(rec => rec.ExcursionGuides).Include(rec => rec.TourGuides)
+                .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                .Select(CreateModel)
+                .ToList();
+                }
+                
+            }
         }
-
-        public List<GuideViewModel> GetFullList()
+        public GuideViewModel GetElement(GuideBindingModel model)
         {
-            using var context = new TravelAgencyDatabase();
-            return context.Guides   
-            .Select(CreateModel)
-            .ToList();
+            if (model == null)
+            {
+                return null;
+            }
+            using (var context = new TravelAgencyDatabase())
+            {
+                var tt = GetFullList();
+                var guide = context.Guides
+                .Include(rec => rec.TourGuides)
+                .Include(rec => rec.ExcursionGuides)
+                .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                .FirstOrDefault(rec => rec.Id == model.Id);
+                return guide != null ? CreateModel(guide) : null;
+            }
         }
-
         public void Insert(GuideBindingModel model)
         {
-            using var context = new TravelAgencyDatabase();
-            using var transaction = context.Database.BeginTransaction();
-            try
+            using (var context = new TravelAgencyDatabase())
             {
-                context.Guides.Add(CreateModel(model, new Guide(), context));
-                context.SaveChanges();
-                transaction.Commit();
-            }
-            catch
-            {
-                transaction.Rollback();
-                throw;
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        Guide guide = new Guide()
+                        {
+                            GuideName = model.GuideName,
+                            Date = model.Date,
+                            Cost = model.Cost,
+                            OperatorLogin = model.OperatorLogin
+                        };
+                        context.Guides.Add(guide);
+                        context.SaveChanges();
+                        CreateModel(model, guide);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
             }
         }
-
         public void Update(GuideBindingModel model)
         {
-            using var context = new TravelAgencyDatabase();
-            using var transaction = context.Database.BeginTransaction();
-            try
+            using (var context = new TravelAgencyDatabase())
             {
-                var element = context.Guides.FirstOrDefault(rec => rec.Id ==
-                model.Id);
-                if (element == null)
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var element = context.Guides.Include(rec => rec.TourGuides)
+                            .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                            .FirstOrDefault(rec => rec.Id == model.Id);
+                        if (element == null)
+                        {
+                            throw new Exception("Элемент не найден");
+                        }
+                        CreateModel(model, element);
+                        context.SaveChanges();
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+        public void Delete(GuideBindingModel model)
+        {
+            using (var context = new TravelAgencyDatabase())
+            {
+                Guide element = context.Guides.Include(rec => rec.TourGuides)
+                    .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                    .FirstOrDefault(rec => rec.Id == model.Id);
+                if (element != null)
+                {
+                    context.Guides.Remove(element);
+                    context.SaveChanges();
+                }
+                else
                 {
                     throw new Exception("Элемент не найден");
                 }
-                CreateModel(model, element, context);
-                context.SaveChanges();
-                transaction.Commit();
-            }
-            catch
-            {
-                transaction.Rollback();
-                throw;
             }
         }
-        private static Guide CreateModel(GuideBindingModel model, Guide guide, TravelAgencyDatabase context)
+        public void AddExcursion(AddGuideExcursionBindingModel addExcursion)
+        {
+            using (var context = new TravelAgencyDatabase())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        if (context.ExcursionGuides.FirstOrDefault(rec => rec.GuideId == addExcursion.GuideId && rec.ExcursionId == addExcursion.ExcursionId) != null)
+                        {
+                            var guideExcursion = context.ExcursionGuides.FirstOrDefault(rec => rec.GuideId == addExcursion.GuideId && rec.ExcursionId == addExcursion.ExcursionId);
+                            guideExcursion.ExcursionCount = addExcursion.ExcursionCount;
+                        }
+                        else
+                        {
+                            context.ExcursionGuides.Add(new ExcursionGuide { GuideId = addExcursion.GuideId, ExcursionId = addExcursion.ExcursionId, ExcursionCount = addExcursion.ExcursionCount });
+                        }
+                        context.SaveChanges();
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+        private static Guide CreateModel(GuideBindingModel model, Guide guide)
         {
             guide.GuideName = model.GuideName;
-            guide.Cost = model.Cost;
-            guide.OperatorLogin = model.OperatorLogin;
-            guide.Date = model.Date;
-            if (model.Id.HasValue)
-            {
-                var guideExcursion = context.ExcursionGuides.Where(rec => rec.ExcursionId == model.Id.Value).ToList();
-                // удалили те, которых нет в модели
-                context.ExcursionGuides.RemoveRange(guideExcursion.Where(rec => !model.GuideExcursions.ContainsKey(rec.ExcursionId)).ToList());
-                context.SaveChanges();
-            }
-            // добавили новые
-            foreach (var cd in model.GuideExcursions)
-            {
-                context.ExcursionGuides.Add(new ExcursionGuide
-                {
-                    ExcursionId = cd.Key,
-                    GuideId = guide.Id,
-                });
-                context.SaveChanges();
-            }
+            guide.Cost = model.Cost;            
             return guide;
         }
         private static GuideViewModel CreateModel(Guide guide)
@@ -136,12 +178,11 @@ namespace TravelAgencyDatabaseImplements.Implements
             return new GuideViewModel
             {
                 Id = guide.Id,
+                Date=guide.Date,
                 GuideName = guide.GuideName,
                 Cost = guide.Cost,
-                Date = guide.Date,
-                GuideExcursions = guide.ExcursionGuides
-            .ToDictionary(recII => recII.ExcursionId,
-            recII => (recII.Excursion?.Name, recII.Excursion.Type))
+                OperatorLogin=guide.OperatorLogin,
+                GuideExcursions=guide.ExcursionGuides.ToDictionary(rec => rec.ExcursionId, rec => rec.ExcursionCount)                               
             };
         }
     }

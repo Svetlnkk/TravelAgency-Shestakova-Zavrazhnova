@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace TravelAgencyContracts.BindingModels
 {
-    public class TourBindingModel
+    public class AddGuideExcursionBindingModel
     {
-        public int? Id { get; set; }
-        public string TourName { get; set; }
+        public int GuideId { get; set; }
+        public int ExcursionId { get; set; }
+        public int ExcursionCount { get; set; }
         public string OperatorLogin { get; set; }
-        public Dictionary<int, int> TourGuides { get; set; }
-
     }
 }

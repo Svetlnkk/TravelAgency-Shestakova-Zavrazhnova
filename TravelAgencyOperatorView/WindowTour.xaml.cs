@@ -25,47 +25,43 @@ namespace TravelAgencyOperatorView
     public partial class WindowTour : Window
     {
         public int Id { set { id = value; } }
-        ITourLogic tourLogic;        
+        private readonly ITourLogic tourLogic;
+        private readonly IGuideLogic guideLogic;
         private int? id;
-        private Dictionary<int, (string, decimal)> tourGuides;
-        public WindowTour(ITourLogic tourLogic)
+        private Dictionary<int, int> tourGuides;
+        public WindowTour(ITourLogic tourLogic, IGuideLogic guideLogic)
         {
             InitializeComponent();
             this.tourLogic = tourLogic;
-        }
-        private void LoadData()
-        {
-            try
-            {
-                if (tourGuides != null)
-                {
-                    SelectedGuidesListBox.Items.Clear();
-                    foreach (var mm in tourGuides)
-                    {
-                        SelectedGuidesListBox.Items.Add(new object[] { mm.Key, mm.Value.Item1, mm.Value.Item2 });
-                    }
-                }                
-                
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
+            this.guideLogic = guideLogic;
+        }        
         private void WindowTour_Loaded(object sender, RoutedEventArgs e)
         {
+            var list = guideLogic.Read(null);
+            CanSelectedGuidesListBox.ItemsSource = list;
+            CanSelectedGuidesListBox.SelectedItem = null;
+            SelectedGuidesListBox.SelectedItem = null;
             if (id.HasValue)
             {
                 try
                 {
-                    TourViewModel view = tourLogic.Read(new TourBindingModel
-                    {
-                        Id = id.Value
-                    })?[0];
+                    var view = tourLogic.Read(new TourBindingModel { Id = id, OperatorLogin = WindowAuthorization.AutorizedOperator })?[0];
                     if (view != null)
                     {
-                        tourGuides = view.TourGuides;
-                        NameTextBox.Text = view.TourName;
+                        NameTextBox.Text = view.TourName.ToString();                        
+                        var canSelectedList = guideLogic.Read(null)
+                            /*.Where(rec => view.GuideTours.ContainsKey(rec.Id))*/;
+                        /*if (view.GuideTours.Count != 0)
+                        {
+                            CountBox.Text = view.GuideTours.First().Value.ToString();
+                        }*/
+                        foreach (GuideViewModel i in CanSelectedGuidesListBox.Items)
+                        {
+                            if (canSelectedList.FirstOrDefault(rec => rec.Id == i.Id) != null)
+                            {
+                                SelectedGuidesListBox.Items.Add(i);
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -73,38 +69,32 @@ namespace TravelAgencyOperatorView
                     MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-            else
-            {
-                tourGuides = new Dictionary<int, (string, decimal)>();
-            }
-            LoadData();
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(NameTextBox.Text))
             {
-                MessageBox.Show("Заполните название", "Ошибка", MessageBoxButton.OK,
-               MessageBoxImage.Error);
+                MessageBox.Show("Заполните название", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
-            }
-            
-            if (tourGuides.Count == 0)
+            }            
+            if (SelectedGuidesListBox.Items.Count == 0)
             {
                 MessageBox.Show("Выберите гида", "Ошибка", MessageBoxButton.OK,MessageBoxImage.Error);
                 return;
             }
             try
             {
+                string name = NameTextBox.Text;
+                tourGuides = new Dictionary<int, int>();                
                 tourLogic.CreateOrUpdate(new TourBindingModel
                 {
                     Id = id,
                     TourName = NameTextBox.Text,                    
-                    TourGuides = tourGuides
+                    TourGuides = tourGuides,
+                    OperatorLogin = WindowAuthorization.AutorizedOperator
                 });
-                MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButton.OK,
-               MessageBoxImage.Information);
-                DialogResult = true;
+                MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);                
                 Close();
             }
             catch (Exception ex)
@@ -122,18 +112,21 @@ namespace TravelAgencyOperatorView
         {
             if (SelectedGuidesListBox.SelectedItems.Count == 1)
             {
-                //tourGuides.Remove(tourGuides.Where(rec => rec.Value == (int)SelectedGuidesListBox.SelectedItem).ToList()[0].Key);
-                LoadData();
+                int removeIndex = SelectedGuidesListBox.SelectedIndex;
+                SelectedGuidesListBox.SelectedItem = null;
+                SelectedGuidesListBox.Items.RemoveAt(removeIndex);
             }
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            //var window = App.Container.Resolve<WindowGuides>();
-            if (CanSelectedGuidesListBox.SelectedItems.Count == 1)
-            {
-                //tourGuides.Add(((GuideViewModel)CanSelectedGuidesListBox.SelectedItem).Id, (window.GuideName, window.Cost));
-                LoadData();
+            if (CanSelectedGuidesListBox.SelectedItem != null) {
+                var changeItem = CanSelectedGuidesListBox.SelectedItem;
+                if (CanSelectedGuidesListBox.SelectedItems.Count == 1)
+                {
+                    SelectedGuidesListBox.Items.Add(changeItem);
+                }
+                CanSelectedGuidesListBox.SelectedItem = null;
             }
         }
     }

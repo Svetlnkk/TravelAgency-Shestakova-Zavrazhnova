@@ -25,7 +25,7 @@ namespace TravelAgencyOperatorView
     /// </summary>
     public partial class WindowGuides : Window
     {
-        IGuideLogic guideLogic;
+        private readonly IGuideLogic guideLogic;
         public WindowGuides(IGuideLogic guideLogic)
         {
             InitializeComponent();
@@ -33,14 +33,12 @@ namespace TravelAgencyOperatorView
         }
         private void LoadData()
         {
-            var list = guideLogic.Read(null);
+            var list = guideLogic.Read(new GuideBindingModel { OperatorLogin = WindowAuthorization.AutorizedOperator });
             if (list != null)
             {
                 GuidesData.ItemsSource = list;
                 GuidesData.Columns[0].Visibility = Visibility.Hidden;
-                GuidesData.Columns[4].Visibility = Visibility.Hidden;
-                GuidesData.Columns[5].Visibility = Visibility.Hidden;
-                GuidesData.Columns[6].Visibility = Visibility.Hidden;
+                //GuidesData.Columns[4].Visibility = Visibility.Hidden;                
                 GuidesData.Columns[1].Header = "ФИО";
                 GuidesData.Columns[2].Header = "Зарплата";
                 GuidesData.Columns[3].Header = "Дата";
@@ -63,7 +61,7 @@ namespace TravelAgencyOperatorView
                 return;
             }
             int selecctedGuideId = ((GuideViewModel)GuidesData.SelectedItem).Id;
-            guideLogic.Delete(new GuideBindingModel { Id = selecctedGuideId });
+            guideLogic.Delete(new GuideBindingModel { Id = selecctedGuideId, OperatorLogin = WindowAuthorization.AutorizedOperator });
             LoadData();
         }
 

@@ -56,7 +56,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
                 var listGuideIds = new List<int>();
                 foreach (var elem in tripTours)
                 {
-                   listGuideIds.AddRange(elem.TourGuides.Keys.ToList());
+                   listGuideIds.AddRange(elem.GuideTours.Keys.ToList());
                 }
                 record.Guides = listGuideIds.Distinct().ToList().Select(rec => guideStorage.GetElement(new GuideBindingModel { Id = rec })).ToList();
                 var tripExcursions = trip.TripExcursions.Keys.ToList();
@@ -88,7 +88,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
                 var tripTours = trip.TripTours.Keys.ToList().Select(rec => tourStorage.GetElement(new TourBindingModel { Id = rec }));
                 foreach (var elem in tripTours)
                 {
-                    listGuideIds.AddRange(elem.TourGuides.Keys.ToList());
+                    listGuideIds.AddRange(elem.GuideTours.Keys.ToList());
                 }
             }
             list = listGuideIds.Distinct().ToList().Select(rec => guideStorage.GetElement(new GuideBindingModel { Id = rec })).ToList();
