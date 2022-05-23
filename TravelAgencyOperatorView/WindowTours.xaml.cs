@@ -38,7 +38,8 @@ namespace TravelAgencyOperatorView
             {
                 ToursData.ItemsSource = list;
                 ToursData.Columns[0].Visibility = Visibility.Hidden;
-                ToursData.Columns[2].Visibility = Visibility.Hidden;                
+                ToursData.Columns[2].Visibility = Visibility.Hidden;
+                ToursData.Columns[3].Visibility = Visibility.Hidden;
                 ToursData.Columns[1].Header = "Название тура";
                 ToursData.SelectedItem = null;
             }

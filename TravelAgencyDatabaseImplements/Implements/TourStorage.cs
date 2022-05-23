@@ -18,6 +18,7 @@ namespace TravelAgencyDatabaseImplements.Implements
             using (var context = new TravelAgencyDatabase())
             {
                 return context.Tours
+                    .Include(rec => rec.TourGuides)
                 .Select(CreateModel)
                 .ToList();
             }
@@ -31,6 +32,7 @@ namespace TravelAgencyDatabaseImplements.Implements
             using (var context = new TravelAgencyDatabase())
             {
                 return context.Tours
+                    .Include(rec => rec.TourGuides)
                 .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
                 .Select(CreateModel)
                 .ToList();
@@ -45,6 +47,7 @@ namespace TravelAgencyDatabaseImplements.Implements
             using (var context = new TravelAgencyDatabase())
             {
                 var tour = context.Tours
+                    .Include(rec => rec.TourGuides)
                     .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
                 .FirstOrDefault(rec => rec.Id == model.Id);
                 return tour != null ? CreateModel(tour) : null;
@@ -86,6 +89,7 @@ namespace TravelAgencyDatabaseImplements.Implements
                     try
                     {
                         var element = context.Tours
+                            .Include(rec => rec.TourGuides)
                             .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
                             .FirstOrDefault(rec => rec.Id == model.Id);
                         if (element == null)
@@ -109,6 +113,7 @@ namespace TravelAgencyDatabaseImplements.Implements
             using (var context = new TravelAgencyDatabase())
             {
                 Tour element = context.Tours
+                    .Include(rec => rec.TourGuides)
                     .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
                     .FirstOrDefault(rec => rec.Id == model.Id);
                 if (element != null)
@@ -123,10 +128,6 @@ namespace TravelAgencyDatabaseImplements.Implements
             }
 
         }
-
-          
-
-        
         private static Tour CreateModel(TourBindingModel model, Tour tour, TravelAgencyDatabase context)
         {
             tour.TourName = model.TourName;
