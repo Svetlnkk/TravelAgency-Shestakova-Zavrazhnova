@@ -49,12 +49,7 @@ namespace TravelAgencyOperatorView
                     if (view != null)
                     {
                         NameTextBox.Text = view.TourName.ToString();                        
-                        var canSelectedList = guideLogic.Read(null)
-                            /*.Where(rec => view.GuideTours.ContainsKey(rec.Id))*/;
-                        /*if (view.GuideTours.Count != 0)
-                        {
-                            CountBox.Text = view.GuideTours.First().Value.ToString();
-                        }*/
+                        var canSelectedList = guideLogic.Read(null).Where(rec => view.GuideTours.ContainsKey(rec.Id));                        
                         foreach (GuideViewModel i in CanSelectedGuidesListBox.Items)
                         {
                             if (canSelectedList.FirstOrDefault(rec => rec.Id == i.Id) != null)
@@ -77,7 +72,12 @@ namespace TravelAgencyOperatorView
             {
                 MessageBox.Show("Заполните название", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
-            }            
+            }
+            if (CountBox.Text == "" || !int.TryParse(CountBox.Text, out int numberCount))
+            {
+                MessageBox.Show("Введите количество в виде числа");
+                return;
+            }
             if (SelectedGuidesListBox.Items.Count == 0)
             {
                 MessageBox.Show("Выберите гида", "Ошибка", MessageBoxButton.OK,MessageBoxImage.Error);
@@ -86,7 +86,12 @@ namespace TravelAgencyOperatorView
             try
             {
                 string name = NameTextBox.Text;
-                tourGuides = new Dictionary<int, int>();                
+                int count = Convert.ToInt32(CountBox.Text);
+                tourGuides = new Dictionary<int, int>();
+                foreach(GuideViewModel i in SelectedGuidesListBox.Items)
+                {
+                    tourGuides.Add(i.Id, count);
+                }
                 tourLogic.CreateOrUpdate(new TourBindingModel
                 {
                     Id = id,

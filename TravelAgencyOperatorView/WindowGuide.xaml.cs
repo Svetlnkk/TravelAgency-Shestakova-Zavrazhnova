@@ -44,25 +44,18 @@ namespace TravelAgencyOperatorView
             {
                 MessageBox.Show("Введите зарплату в виде числа");
                 return;
-            }
-            try
+            }            
+            guideLogic.CreateOrUpdate(new GuideBindingModel
             {
-                guideLogic.CreateOrUpdate(new GuideBindingModel
-                {
-                    Id = id,
-                    GuideName = FIOBox.Text,
-                    Cost = Convert.ToDecimal(CostBox.Text),
-                    Date = DateTime.Now,
-                    OperatorLogin = WindowAuthorization.AutorizedOperator
-                });
-                MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButton.OK,
+                Id = id,
+                GuideName = FIOBox.Text,
+                Cost = Convert.ToDecimal(CostBox.Text),
+                Date = DateTime.Now,
+                OperatorLogin = WindowAuthorization.AutorizedOperator
+            });
+            MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButton.OK,
                MessageBoxImage.Information);                
-                Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+                Close();            
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)

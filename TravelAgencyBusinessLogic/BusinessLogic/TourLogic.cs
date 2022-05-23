@@ -30,15 +30,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
             return tourStorage.GetFilteredList(model);
         }
         public void CreateOrUpdate(TourBindingModel model)
-        {
-            var element = tourStorage.GetElement(new TourBindingModel
-            {
-                TourName = model.TourName
-            });
-            if (element != null && element.Id != model.Id)
-            {
-                throw new Exception("Уже есть тур с таким названием");
-            }
+        {            
             if (model.Id.HasValue)
             {
                 tourStorage.Update(model);
@@ -50,7 +42,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
         }
         public void Delete(TourBindingModel model)
         {
-            var element = tourStorage.GetElement(model);
+            var element = tourStorage.GetElement(new TourBindingModel { Id=model.Id});
             if (element == null)
             {
                 throw new Exception("Тур не найден");

@@ -10,6 +10,6 @@ namespace TravelAgencyContracts.ViewModels
     {
         public string TourName { get; set; }
         public string GuideName { get; set; }
-        public List<Tuple<string, string>> Excursions { get; set; }
+        public List<int> Excursions { get; set; }
     }
 }

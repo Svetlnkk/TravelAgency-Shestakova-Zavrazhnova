@@ -12,6 +12,6 @@ namespace TravelAgencyContracts.BussinessLogicsContracts
     {
         List<ExcursionViewModel> Read(ExcursionBindingModel model);
         void CreateOrUpdate(ExcursionBindingModel model);
-        void Delete(ExcursionBindingModel model);
+        void Delete(ExcursionBindingModel model);        
     }
 }

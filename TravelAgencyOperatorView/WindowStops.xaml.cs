@@ -37,8 +37,8 @@ namespace TravelAgencyOperatorView
             if (list != null)
             {
                 StopsData.ItemsSource = list;
-                StopsData.Columns[0].Visibility = Visibility.Hidden;
-                StopsData.Columns[4].Visibility = Visibility.Hidden;
+                StopsData.Columns[0].Visibility = Visibility.Hidden;                
+                StopsData.Columns[4].Visibility = Visibility.Hidden;                
                 StopsData.Columns[1].Header = "Название";
                 StopsData.Columns[2].Header = "Дата заезда";
                 StopsData.Columns[3].Header = "Дата выезда";

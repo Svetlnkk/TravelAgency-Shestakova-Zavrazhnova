@@ -44,7 +44,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
         }
         public void Delete(GuideBindingModel model)
         {
-            var element = guideStorage.GetElement(model);
+            var element = guideStorage.GetElement(new GuideBindingModel { Id=model.Id});
             if (element == null)
             {
                 throw new Exception("Гид не найден");
@@ -58,13 +58,13 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
             {
                 throw new Exception("Гид не найден");
             }
-            var excursion = excursionStorage.GetElement(new ExcursionBindingModel { Id = addExcursion.ExcursionId, OperatorLogin = addExcursion.OperatorLogin });
+            var excursion = excursionStorage.GetElement(new ExcursionBindingModel { Id = addExcursion.ExcursionId});
             if (excursion == null)
             {
                 throw new Exception("Экскурсия не найдена");
             }
             guideStorage.AddExcursion(addExcursion);
         }
-        
+
     }
 }

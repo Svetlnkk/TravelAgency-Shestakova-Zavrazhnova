@@ -9,8 +9,7 @@ namespace TravelAgencyContracts.ViewModels
 {
     public class StopViewModel
     {
-        public int Id { get; set; }
-        public int TourId { get; set; }
+        public int Id { get; set; }        
         [DisplayName("Название остановки")]
         public string StopName { get; set; }
         [DisplayName("Дата заезда")]
@@ -18,7 +17,7 @@ namespace TravelAgencyContracts.ViewModels
         [DisplayName("Дата выезда")]
         public DateTime DateofDepatureStop { get; set; }
         public String OperatorLogin { get; set; }
-        public int StopTour {get; set;}
-        
+        public int TourId { get; set; }
+
     }
 }

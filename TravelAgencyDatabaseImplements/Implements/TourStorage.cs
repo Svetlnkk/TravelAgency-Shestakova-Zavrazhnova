@@ -33,7 +33,7 @@ namespace TravelAgencyDatabaseImplements.Implements
             {
                 return context.Tours
                     .Include(rec => rec.TourGuides)
-                .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                //.Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
                 .Select(CreateModel)
                 .ToList();
             }
@@ -48,7 +48,7 @@ namespace TravelAgencyDatabaseImplements.Implements
             {
                 var tour = context.Tours
                     .Include(rec => rec.TourGuides)
-                    .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                    //.Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
                 .FirstOrDefault(rec => rec.Id == model.Id);
                 return tour != null ? CreateModel(tour) : null;
             }
@@ -90,7 +90,7 @@ namespace TravelAgencyDatabaseImplements.Implements
                     {
                         var element = context.Tours
                             .Include(rec => rec.TourGuides)
-                            .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                            //.Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
                             .FirstOrDefault(rec => rec.Id == model.Id);
                         if (element == null)
                         {
@@ -114,7 +114,7 @@ namespace TravelAgencyDatabaseImplements.Implements
             {
                 Tour element = context.Tours
                     .Include(rec => rec.TourGuides)
-                    .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                    //.Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
                     .FirstOrDefault(rec => rec.Id == model.Id);
                 if (element != null)
                 {

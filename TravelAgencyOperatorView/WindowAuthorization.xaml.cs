@@ -45,7 +45,7 @@ namespace TravelAgencyOperatorView
             {
                 AutorizedOperator = login;
                 MainWindow mainWindow = App.Container.Resolve<MainWindow>();
-                mainWindow.Show();                
+                mainWindow.Show();
             }
             else
             {

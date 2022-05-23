@@ -16,7 +16,9 @@ namespace TravelAgencyDatabaseImplements.Implements
         public List<ExcursionViewModel> GetFullList()
         {
             using var context = new TravelAgencyDatabase();
-            return context.Excursions.Where(rec => rec.TouristLogin == TouristStorage.AutorizedWorker).Select(CreateModel).ToList();
+            return context.Excursions
+                //.Where(rec => rec.TouristLogin == TouristStorage.AutorizedWorker)
+                .Select(CreateModel).ToList();
         }
         public List<ExcursionViewModel> GetFilteredList(ExcursionBindingModel model)
         {
@@ -25,7 +27,7 @@ namespace TravelAgencyDatabaseImplements.Implements
                 return null;
             }
             using var context = new TravelAgencyDatabase();
-            return context.Excursions.Where(rec => rec.Name == model.Name && rec.TouristLogin == TouristStorage.AutorizedWorker).Select(CreateModel).ToList();
+            return context.Excursions.Where(rec => rec.Name == model.Name /*&& rec.TouristLogin == TouristStorage.AutorizedWorker*/).Select(CreateModel).ToList();
         }
         public ExcursionViewModel GetElement(ExcursionBindingModel model)
         {
@@ -34,20 +36,24 @@ namespace TravelAgencyDatabaseImplements.Implements
                 return null;
             }
             using var context = new TravelAgencyDatabase();
-            var excursion = context.Excursions.Where(rec => rec.TouristLogin == TouristStorage.AutorizedWorker).FirstOrDefault(rec => rec.Id == model.Id);
+            var excursion = context.Excursions
+               //.Where(rec => rec.TouristLogin == TouristStorage.AutorizedWorker)
+                .FirstOrDefault(rec => rec.Id == model.Id);
             return excursion != null ? CreateModel(excursion) : null;
         }
         public void Insert(ExcursionBindingModel model)
         {
             using var context = new TravelAgencyDatabase();
-            model.TouristLogin = TouristStorage.AutorizedWorker;
+           // model.TouristLogin = TouristStorage.AutorizedWorker;
             context.Excursions.Add(CreateModel(model, new Excursion()));
             context.SaveChanges();
         }
         public void Update(ExcursionBindingModel model)
         {
             using var context = new TravelAgencyDatabase();
-            var element = context.Excursions.Where(rec => rec.TouristLogin == TouristStorage.AutorizedWorker).FirstOrDefault(rec => rec.Id == model.Id);
+            var element = context.Excursions
+                //.Where(rec => rec.TouristLogin == TouristStorage.AutorizedWorker)
+                .FirstOrDefault(rec => rec.Id == model.Id);
             if (element == null)
             {
                 throw new Exception("Элемент не найден");
@@ -58,7 +64,9 @@ namespace TravelAgencyDatabaseImplements.Implements
         public void Delete(ExcursionBindingModel model)
         {
             using var context = new TravelAgencyDatabase();
-            Excursion element = context.Excursions.Where(rec => rec.TouristLogin == TouristStorage.AutorizedWorker).FirstOrDefault(rec => rec.Id == model.Id);
+            Excursion element = context.Excursions
+                //.Where(rec => rec.TouristLogin == TouristStorage.AutorizedWorker)
+                .FirstOrDefault(rec => rec.Id == model.Id);
             if (element != null)
             {
                 context.Excursions.Remove(element);
@@ -69,6 +77,7 @@ namespace TravelAgencyDatabaseImplements.Implements
                 throw new Exception("Элемент не найден");
             }
         }
+        
         private static Excursion CreateModel(ExcursionBindingModel model, Excursion excursion)
         {
             excursion.Name = model.Name;

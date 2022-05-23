@@ -30,15 +30,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
             return stopStorage.GetFilteredList(model);
         }
         public void CreateOrUpdate(StopBindingModel model)
-        {
-            var element = stopStorage.GetElement(new StopBindingModel
-            {
-                StopName = model.StopName
-            });
-            if (element != null && element.Id != model.Id)
-            {
-                throw new Exception("Уже есть остановка с таким названием");
-            }
+        {            
             if (model.Id.HasValue)
             {
                 stopStorage.Update(model);
@@ -50,7 +42,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
         }
         public void Delete(StopBindingModel model)
         {
-            var element = stopStorage.GetElement(model);
+            var element = stopStorage.GetElement(new StopBindingModel { Id=model.Id});
             if (element == null)
             {
                 throw new Exception("Остановка не найдена");

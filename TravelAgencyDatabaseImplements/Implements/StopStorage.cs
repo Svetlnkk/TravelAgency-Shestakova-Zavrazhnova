@@ -31,7 +31,7 @@ namespace TravelAgencyDatabaseImplements.Implements
             using (var context = new TravelAgencyDatabase())
             {
                 return context.Stops
-                .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                //.Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
                 .Select(CreateModel)
                 .ToList();
             }
@@ -45,7 +45,7 @@ namespace TravelAgencyDatabaseImplements.Implements
             using (var context = new TravelAgencyDatabase())
             {
                 var stop = context.Stops
-                    .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                    //.Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
                 .FirstOrDefault(rec => rec.Id == model.Id);
                 return stop != null ? CreateModel(stop) : null;
             }
@@ -88,9 +88,8 @@ namespace TravelAgencyDatabaseImplements.Implements
                     try
                     {
                         var element = context.Stops
-                            .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
-                            .FirstOrDefault(rec => rec.Id ==
-                        model.Id);
+                            //.Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                            .FirstOrDefault(rec => rec.Id == model.Id);
                         if (element == null)
                         {
                             throw new Exception("Элемент не найден");
@@ -113,19 +112,20 @@ namespace TravelAgencyDatabaseImplements.Implements
         }
         public void Delete(StopBindingModel model)
         {
-            using var context = new TravelAgencyDatabase();
-            Stop element = context.Stops
-                .Where(rec =>
-                !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
-                .FirstOrDefault(rec => rec.Id == model.Id);
-            if (element != null)
+            using (var context = new TravelAgencyDatabase())
             {
-                context.Stops.Remove(element);
-                context.SaveChanges();
-            }
-            else
-            {
-                throw new Exception("Элемент не найден");
+                Stop element = context.Stops
+                    //.Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                    .FirstOrDefault(rec => rec.Id == model.Id);
+                if (element != null)
+                {
+                    context.Stops.Remove(element);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception("Элемент не найден");
+                }
             }
         }     
         private static StopViewModel CreateModel(Stop stop)

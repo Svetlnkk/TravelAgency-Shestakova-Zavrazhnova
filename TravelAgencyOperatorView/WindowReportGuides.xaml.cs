@@ -31,10 +31,14 @@ namespace TravelAgencyOperatorView
             textColumnDate.Header = "Дата";
             textColumnDate.Binding = new Binding("dateCreate");
             DataGrid.Columns.Add(textColumnDate);
-            DataGridTextColumn textColumnWeight = new DataGridTextColumn();
-            textColumnWeight.Header = "Имя гида";
-            textColumnWeight.Binding = new Binding("name");
-            DataGrid.Columns.Add(textColumnWeight);
+            DataGridTextColumn textColumnName = new DataGridTextColumn();
+            textColumnName.Header = "Имя гида";
+            textColumnName.Binding = new Binding("name");
+            DataGrid.Columns.Add(textColumnName);
+            DataGridTextColumn textColumnPrice = new DataGridTextColumn();
+            textColumnPrice.Header = "Цена обеда";
+            textColumnPrice.Binding = new Binding("price");
+            DataGrid.Columns.Add(textColumnPrice);
             DataGridTextColumn textColumnExcursionName = new DataGridTextColumn();
             textColumnExcursionName.Header = "Название экскурсий";
             textColumnExcursionName.Binding = new Binding("excursionName");
@@ -42,16 +46,13 @@ namespace TravelAgencyOperatorView
             DataGridTextColumn textColumnTourName = new DataGridTextColumn();
             textColumnTourName.Header = "Название тура";
             textColumnTourName.Binding = new Binding("tourName");
-            DataGrid.Columns.Add(textColumnTourName);
-            /*DataGridTextColumn textColumnCookName = new DataGridTextColumn();
-            textColumnCookName.Header = "Имя гида";
-            textColumnCookName.Binding = new Binding("guideName");
-            DataGrid.Columns.Add(textColumnCookName);*/
+            DataGrid.Columns.Add(textColumnTourName);            
         }
         private class itemGuide
         {
             public string dateCreate { get; set; }
             public string name { get; set; }
+            public string price { get; set; }
             public string excursionName { get; set; }
             public string tourName { get; set; }            
         }
@@ -79,7 +80,8 @@ namespace TravelAgencyOperatorView
                         DataGrid.Items.Add(new itemGuide()
                         {
                             dateCreate = elem.DateCreate.ToShortDateString(),
-                            name = elem.GuideName.ToString()
+                            name = elem.GuideName.ToString(),
+                            price=elem.Cost.ToString()
                         });
                         for (int i = 0; i < Math.Max(elem.Tours.Count, elem.Excursions.Count); ++i)
                         {
@@ -91,7 +93,6 @@ namespace TravelAgencyOperatorView
                             if (i < elem.Excursions.Count)
                             {
                                 newItem.excursionName = elem.Excursions[i].Name;
-                                //newItem.placeCount = elem.Places[i].DateOfVisit.ToString();
                             }
                             DataGrid.Items.Add(newItem);
                         }
@@ -106,6 +107,12 @@ namespace TravelAgencyOperatorView
 
         private void SendMessage_Click(object sender, RoutedEventArgs e)
         {
+            if (DatePickerAfter.SelectedDate == null || DatePickerBefore.SelectedDate == null ||
+                DatePickerAfter.SelectedDate >= DatePickerBefore.SelectedDate)
+            {
+                MessageBox.Show("Дата начала должна быть меньше даты окончания", "Ошибка");
+                return;
+            }
             var dialog = new SaveFileDialog();
             dialog.Filter = "pdf|*.pdf";
             if (dialog.ShowDialog() == true)
