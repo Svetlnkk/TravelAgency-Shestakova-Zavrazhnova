@@ -38,7 +38,8 @@ namespace TravelAgencyOperatorView
             {
                 GuidesData.ItemsSource = list;
                 GuidesData.Columns[0].Visibility = Visibility.Hidden;
-                //GuidesData.Columns[4].Visibility = Visibility.Hidden;                
+                GuidesData.Columns[4].Visibility = Visibility.Hidden;
+                GuidesData.Columns[5].Visibility = Visibility.Hidden;
                 GuidesData.Columns[1].Header = "ФИО";
                 GuidesData.Columns[2].Header = "Зарплата";
                 GuidesData.Columns[3].Header = "Дата";

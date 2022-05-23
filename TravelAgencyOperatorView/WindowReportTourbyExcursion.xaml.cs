@@ -62,7 +62,7 @@ namespace TravelAgencyOperatorView
             }
             else
             {
-                MessageBox.Show("Выберите путешествия", "Ошибка");
+                MessageBox.Show("Выберите туры", "Ошибка");
             }
         }
 
@@ -81,7 +81,7 @@ namespace TravelAgencyOperatorView
             }
             else
             {
-                MessageBox.Show("Выберите путешествия", "Ошибка");
+                MessageBox.Show("Выберите туры", "Ошибка");
             }
         }
 

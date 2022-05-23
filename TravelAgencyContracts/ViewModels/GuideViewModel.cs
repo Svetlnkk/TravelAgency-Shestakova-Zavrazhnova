@@ -17,8 +17,7 @@ namespace TravelAgencyContracts.ViewModels
         public decimal Cost { get; set; }
         [DisplayName("Дата")]
         public DateTime Date { get; set; }
-        public string OperatorLogin { get; set; }
-        [DisplayName("Экскурсии")]
+        public string OperatorLogin { get; set; }        
         public Dictionary<int, int> GuideExcursions { get; set; }
        // public Dictionary<int, int> GuideTours { get; set; }
         override
