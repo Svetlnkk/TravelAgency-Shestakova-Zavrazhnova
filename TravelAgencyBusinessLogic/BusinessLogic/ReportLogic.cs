@@ -88,6 +88,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
                 var tripTours = trip.TripTours.Keys.ToList().Select(rec => tourStorage.GetElement(new TourBindingModel { Id = rec }));
                 foreach (var elem in tripTours)
                 {
+                    Console.WriteLine(elem.TourName, elem.Id);
                     listGuideIds.AddRange(elem.GuideTours.Keys.ToList());
                 }
             }
