@@ -17,9 +17,16 @@ namespace TravelAgencyContracts.ViewModels
         public decimal Cost { get; set; }
         [DisplayName("Дата")]
         public DateTime Date { get; set; }
+        public string OperatorLogin { get; set; }
         [DisplayName("Экскурсии")]
-        public Dictionary<int, (string, string)> GuideExcursions { get; set; }
-        
-        
+        public Dictionary<int, int> GuideExcursions { get; set; }
+       // public Dictionary<int, int> GuideTours { get; set; }
+        override
+        public string ToString()
+        {
+            return String.Format(@"Имя = {0}, Зарплата = {1}, Дата = {2}", GuideName, Cost, Date.ToString("d", CultureInfo.GetCultureInfo("en-US")));
+        }
+
+
     }
 }

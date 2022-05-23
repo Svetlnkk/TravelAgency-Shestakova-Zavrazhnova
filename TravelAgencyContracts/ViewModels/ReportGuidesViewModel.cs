@@ -10,7 +10,7 @@ namespace TravelAgencyContracts.ViewModels
     {
         public DateTime DateCreate { get; set; }
         public string GuideName { get; set; }
-        public int Cost { get; set; }
+        public decimal Cost { get; set; }
         public List<TourViewModel> Tours { get; set; }
         public List<ExcursionViewModel> Excursions { get; set; }
     }

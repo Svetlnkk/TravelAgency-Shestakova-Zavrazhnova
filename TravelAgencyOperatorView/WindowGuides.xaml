@@ -25,6 +25,6 @@
         <Button Grid.Row="3" Grid.Column="1" Click="Delete_Click"  Margin="10" MinHeight="30" MinWidth="80" Style="{StaticResource MyButtonStyle}">Удалить</Button>
         <Button Grid.Row="4" Grid.Column="1" Click="Update_Click"  Margin="10" MinHeight="30" MinWidth="80" Style="{StaticResource MyButtonStyle}">Обновить</Button>
         <Button Grid.Row="5" Grid.Column="1" Click="BindingExcursion_Click"  Margin="10" MinHeight="30" MinWidth="80" Style="{StaticResource MyButtonStyle}">Привязка экскурсий</Button>
-        <DataGrid Name="GuidesData" Grid.Row="0" Grid.Column="0" Grid.RowSpan="6" ColumnWidth="*" IsReadOnly="True"  Margin="10" Background="White"></DataGrid>
+        <DataGrid Name="GuidesData" Grid.Row="0" Grid.Column="0" Grid.RowSpan="7" ColumnWidth="*" IsReadOnly="True"  Margin="10" Background="White"></DataGrid>
     </Grid>
 </Window>

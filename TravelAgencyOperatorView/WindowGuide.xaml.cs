@@ -24,7 +24,7 @@ namespace TravelAgencyOperatorView
     /// </summary>
     public partial class WindowGuide : Window
     {
-        IGuideLogic guideLogic;
+        private readonly IGuideLogic guideLogic;
         public int Id { set { id = value; } }
         private int? id;
         public WindowGuide(IGuideLogic guideLogic)
@@ -53,11 +53,10 @@ namespace TravelAgencyOperatorView
                     GuideName = FIOBox.Text,
                     Cost = Convert.ToDecimal(CostBox.Text),
                     Date = DateTime.Now,
-                    //OperatorId = Container.Operator.Id
+                    OperatorLogin = WindowAuthorization.AutorizedOperator
                 });
                 MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButton.OK,
-               MessageBoxImage.Information);
-                DialogResult = true;
+               MessageBoxImage.Information);                
                 Close();
             }
             catch (Exception ex)

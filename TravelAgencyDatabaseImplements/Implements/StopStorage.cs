@@ -13,10 +13,111 @@ namespace TravelAgencyDatabaseImplements.Implements
 {
     public class StopStorage : IStopStorage
     {
+        public List<StopViewModel> GetFullList()
+        {
+            using (var context = new TravelAgencyDatabase())
+            {
+                return context.Stops
+                .Select(CreateModel)
+                .ToList();
+            }
+        }
+        public List<StopViewModel> GetFilteredList(StopBindingModel model)
+        {
+            if (model == null)
+            {
+                return null;
+            }
+            using (var context = new TravelAgencyDatabase())
+            {
+                return context.Stops
+                .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                .Select(CreateModel)
+                .ToList();
+            }
+        }
+        public StopViewModel GetElement(StopBindingModel model)
+        {
+            if (model == null)
+            {
+                return null;
+            }
+            using (var context = new TravelAgencyDatabase())
+            {
+                var stop = context.Stops
+                    .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                .FirstOrDefault(rec => rec.Id == model.Id);
+                return stop != null ? CreateModel(stop) : null;
+            }
+        }
+        public void Insert(StopBindingModel model)
+        {
+            using (var context = new TravelAgencyDatabase())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        Stop stop = new Stop()
+                        {
+                            StopName = model.StopName,
+                            CheckinDateStop = model.CheckinDateStop,
+                            DateofDepatureStop = model.DateofDepatureStop,
+                            OperatorLogin = model.OperatorLogin,
+                            TourId = model.TourId,
+                            Tour = context.Tours.FirstOrDefault(rec => rec.Id == model.TourId)
+                        };
+                        context.Stops.Add(stop);
+                        context.SaveChanges();
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+        public void Update(StopBindingModel model)
+        {
+            using (var context = new TravelAgencyDatabase())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var element = context.Stops
+                            .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                            .FirstOrDefault(rec => rec.Id ==
+                        model.Id);
+                        if (element == null)
+                        {
+                            throw new Exception("Элемент не найден");
+                        }
+                        element.StopName = model.StopName;
+                        element.CheckinDateStop = model.CheckinDateStop;
+                        element.DateofDepatureStop = model.DateofDepatureStop;
+                        element.TourId = model.TourId;
+                        element.Tour = context.Tours.FirstOrDefault(rec => rec.Id == model.TourId);                        
+                        context.SaveChanges();
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
         public void Delete(StopBindingModel model)
         {
             using var context = new TravelAgencyDatabase();
-            Stop element = context.Stops.FirstOrDefault(rec => rec.Id == model.Id);
+            Stop element = context.Stops
+                .Where(rec =>
+                !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                .FirstOrDefault(rec => rec.Id == model.Id);
             if (element != null)
             {
                 context.Stops.Remove(element);
@@ -26,105 +127,17 @@ namespace TravelAgencyDatabaseImplements.Implements
             {
                 throw new Exception("Элемент не найден");
             }
-        }
-
-        public StopViewModel GetElement(StopBindingModel model)
-        {
-            if (model == null)
-            {
-                return null;
-            }
-            using var context = new TravelAgencyDatabase();
-            var order = context.Stops
-            .Include(rec => rec.Tour)
-            .Include(rec => rec.Operator)
-            .FirstOrDefault(rec => rec.Id == model.Id);
-            return order != null ? CreateModel(order) : null;
-        }
-
-        public List<StopViewModel> GetFilteredList(StopBindingModel model)
-        {
-            if (model == null)
-            {
-                return null;
-            }
-            using var context = new TravelAgencyDatabase();
-            return context.Stops
-            .Include(rec => rec.Tour)
-            .Include(rec => rec.Operator)
-            .Where(rec => rec.Id == model.Id)
-            .ToList()
-            .Select(CreateModel)
-            .ToList();
-        }
-
-        public List<StopViewModel> GetFullList()
-        {
-            using var context = new TravelAgencyDatabase();
-            return context.Stops
-            .Include(rec => rec.Tour)
-            .Include(rec => rec.Operator)
-            .ToList()
-            .Select(CreateModel)
-            .ToList();
-        }
-
-        public void Insert(StopBindingModel model)
-        {
-            using var context = new TravelAgencyDatabase();
-            using var transaction = context.Database.BeginTransaction();
-            try
-            {
-                context.Stops.Add(CreateModel(model, new Stop()));
-                context.SaveChanges();
-                transaction.Commit();
-            }
-            catch
-            {
-                transaction.Rollback();
-                throw;
-            }
-        }
-
-        public void Update(StopBindingModel model)
-        {
-            using var context = new TravelAgencyDatabase();
-            using var transaction = context.Database.BeginTransaction();
-            try
-            {
-                var element = context.Stops.FirstOrDefault(rec => rec.Id ==
-                model.Id);
-                if (element == null)
-                {
-                    throw new Exception("Элемент не найден");
-                }
-                CreateModel(model, element);
-                context.SaveChanges();
-                transaction.Commit();
-            }
-            catch
-            {
-                transaction.Rollback();
-                throw;
-            }
-        }
-        private static Stop CreateModel(StopBindingModel model, Stop stop)
-        {
-            stop.TourId = (int)model.TourId;
-            stop.OperatorLogin = model.OperatorLogin;
-            stop.CheckinDateStop = model.CheckinDateStop;
-            stop.DateofDepatureStop = model.DateofDepatureStop;
-            return stop;
-        }
+        }     
         private static StopViewModel CreateModel(Stop stop)
         {
             return new StopViewModel
             {
                 Id = stop.Id,
-                TourId = stop.TourId,
-                TourName = stop.Tour.TourName,
+                StopName=stop.StopName,                                
                 CheckinDateStop = stop.CheckinDateStop,
-                DateofDepatureStop = stop.DateofDepatureStop
+                DateofDepatureStop = stop.DateofDepatureStop,
+                OperatorLogin=stop.OperatorLogin,
+                TourId=stop.TourId
             };
         }
     }

@@ -10,7 +10,7 @@ namespace TravelAgencyContracts.BussinessLogicsContracts
 {
     public interface IReportOperatorLogic
     {
-        List<ReportTourExcursionViewModel> GetTourExcursion(ReportOperatorBindingModel model);
+        List<ExcursionViewModel> GetTourExcursion(ReportOperatorBindingModel model);
         List<ReportGuidesViewModel> GetGuides(ReportOperatorBindingModel model);
         void saveGuidesToPdfFile(ReportOperatorBindingModel model);
         void saveExcursionsToWord(ReportOperatorBindingModel model);

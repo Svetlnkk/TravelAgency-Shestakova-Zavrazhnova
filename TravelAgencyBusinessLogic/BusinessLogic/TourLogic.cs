@@ -12,12 +12,10 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
 {
     public class TourLogic : ITourLogic
     {
-        private readonly ITourStorage tourStorage;
-        private readonly IGuideStorage guideStorage;
-        public TourLogic(ITourStorage tourStorage, IGuideStorage guideStorage)
+        private readonly ITourStorage tourStorage;        
+        public TourLogic(ITourStorage tourStorage)
         {
-            this.tourStorage = tourStorage;
-            this.guideStorage = guideStorage;
+            this.tourStorage = tourStorage;            
         }
         public List<TourViewModel> Read(TourBindingModel model)
         {
@@ -52,10 +50,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
         }
         public void Delete(TourBindingModel model)
         {
-            var element = tourStorage.GetElement(new TourBindingModel
-            {
-                Id = model.Id
-            });
+            var element = tourStorage.GetElement(model);
             if (element == null)
             {
                 throw new Exception("Тур не найден");

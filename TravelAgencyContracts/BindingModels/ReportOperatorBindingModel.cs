@@ -12,6 +12,8 @@ namespace TravelAgencyContracts.BindingModels
         public string FileName { get; set; }
         public DateTime? DateFrom { get; set; }
         public DateTime? DateTo { get; set; }        
-        public List<TourViewModel> tours { get; set; }
+        public List<GuideViewModel>? guides { get; set; }
+        public List<TourViewModel>? tours { get; set; }
+        public String OperatorLogin { get; set; }
     }
 }

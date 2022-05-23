@@ -50,10 +50,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
         }
         public void Delete(StopBindingModel model)
         {
-            var element = stopStorage.GetElement(new StopBindingModel
-            {
-                Id = model.Id
-            });
+            var element = stopStorage.GetElement(model);
             if (element == null)
             {
                 throw new Exception("Остановка не найдена");

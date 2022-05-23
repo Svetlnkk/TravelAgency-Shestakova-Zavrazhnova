@@ -15,6 +15,7 @@ namespace TravelAgencyContracts.StoragesContracts
         GuideViewModel GetElement(GuideBindingModel model);
         void Insert(GuideBindingModel model);
         void Update(GuideBindingModel model);
-        void Delete(GuideBindingModel model);        
+        void Delete(GuideBindingModel model);
+        void AddExcursion(AddGuideExcursionBindingModel addExcursion);
     }
 }

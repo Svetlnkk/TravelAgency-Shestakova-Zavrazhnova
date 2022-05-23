@@ -40,7 +40,8 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
             var guides =guideStorage.GetFilteredList(new GuideBindingModel
             {
                 DateFrom = model.DateFrom,
-                DateTo = model.DateTo
+                DateTo = model.DateTo,
+                OperatorLogin=model.OperatorLogin
             });
             foreach (var guide in guides)
             {
@@ -48,6 +49,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
                 {
                     GuideName = guide.GuideName,
                     DateCreate = guide.Date,
+                    Cost=guide.Cost,
                     Excursions = new List<ExcursionViewModel>(),
                     Tours = new List<TourViewModel>()
                 };
@@ -56,49 +58,36 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
                     var excursion = excursionStorage.GetElement(new ExcursionBindingModel { Id = excursionG.Key });
                     record.Excursions.Add(excursion);
                 }
-                record.Tours = tourStorage.GetFullList()
-                    .Where(rec => rec.TourGuides.Keys.ToList().Contains(guide.Id)).ToList();
+                //record.Tours = tourStorage.GetFullList().Where(rec => rec.TourGuides.Keys.ToList().Contains(guide.Id)).ToList();
                 list.Add(record);
             }
 
             return list;
         }
 
-        public List<ReportTourExcursionViewModel> GetTourExcursion(ReportOperatorBindingModel model)
+        public List<ExcursionViewModel> GetTourExcursion(ReportOperatorBindingModel model)
         {
-            var tours = model.tours;
-            var list = new List<ReportTourExcursionViewModel>();
-            foreach (var tour in tours)
+            var list = new List<ExcursionViewModel>();
+            var listExcurId = new List<int>();
+            foreach (var tour in model.tours)
             {
-                var record = new ReportTourExcursionViewModel
+                var tourGuides = tour.GuideTours.Keys.ToList().Select(rec => guideStorage.GetElement(new GuideBindingModel { Id = rec }));
+                foreach (var elem in tourGuides)
                 {
-                    TourName = tour.TourName,
-                    Excursions = new List<Tuple<string, string>>(),
-                    GuideName = string.Empty
-                };
-                foreach (var guide in tour.TourGuides)
-                {
-                    var guidee = guideStorage.GetElement(new GuideBindingModel { Id = guide.Key });
-                    foreach (var excursion in guidee.GuideExcursions)
-                    {
-                        record.Excursions.Add(new Tuple<string, string>(excursion.Value.Item1, excursion.Value.Item2));
-                        record.GuideName = guidee.GuideName;
-                    }
+                    listExcurId.AddRange(elem.GuideExcursions.Keys.ToList());
                 }
-                list.Add(record);
             }
             return list;
         }
         public void saveGuidesToPdfFile(ReportOperatorBindingModel model)
-        {
-            //var operatorr = operatorStorage.GetAutorizedOperator();
+        {            
             saveToPdf.CreateDoc(new PdfInfo
             {
                 FileName = model.FileName,
                 Title = "Список гидов",
                 DateAfter = model.DateFrom.Value,
                 DateBefore = model.DateTo.Value,
-                //Guides = GetGuidesView(model)
+                Guides = GetGuides(model)
             });
         }
        
@@ -108,7 +97,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
             {
                 FileName = model.FileName,
                 Title = "Список экскурсий:",
-                //Excursions = GetExcursionsByTours(model)
+                Excursions = GetTourExcursion(model)
             });
         }
         public void saveExcursionsToWord(ReportOperatorBindingModel model)
@@ -117,7 +106,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
             {
                 FileName = model.FileName,
                 Title = "Список экскурсий",
-               // Excursions = GetExcursionsByTours(model)
+                Excursions = GetTourExcursion(model)
             });
         }
     }

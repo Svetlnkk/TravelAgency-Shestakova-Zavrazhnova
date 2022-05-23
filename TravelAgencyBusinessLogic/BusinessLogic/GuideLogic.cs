@@ -12,10 +12,12 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
 {
     public class GuideLogic : IGuideLogic
     {
-        private readonly IGuideStorage guideStorage;        
-        public GuideLogic(IGuideStorage guideStorage)
+        private readonly IGuideStorage guideStorage;
+        private readonly IExcursionStorage excursionStorage;
+        public GuideLogic(IGuideStorage guideStorage, IExcursionStorage excursionStorage)
         {
-            this.guideStorage = guideStorage;            
+            this.guideStorage = guideStorage;
+            this.excursionStorage = excursionStorage;
         }
         public List<GuideViewModel> Read(GuideBindingModel model)
         {
@@ -31,14 +33,6 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
         }
         public void CreateOrUpdate(GuideBindingModel model)
         {
-            var element = guideStorage.GetElement(new GuideBindingModel
-            {
-                GuideName = model.GuideName
-            });
-            if (element != null && element.Id != model.Id)
-            {
-                throw new Exception("Уже есть гид с таким именем");
-            }
             if (model.Id.HasValue)
             {
                 guideStorage.Update(model);
@@ -50,15 +44,26 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
         }
         public void Delete(GuideBindingModel model)
         {
-            var element = guideStorage.GetElement(new GuideBindingModel
-            {
-                Id = model.Id
-            });
+            var element = guideStorage.GetElement(model);
             if (element == null)
             {
                 throw new Exception("Гид не найден");
             }
             guideStorage.Delete(model);
+        }
+        public void AddExcursion(AddGuideExcursionBindingModel addExcursion)
+        {
+            var guide = guideStorage.GetElement(new GuideBindingModel { Id = addExcursion.GuideId, OperatorLogin = addExcursion.OperatorLogin });
+            if (guide == null)
+            {
+                throw new Exception("Гид не найден");
+            }
+            var excursion = excursionStorage.GetElement(new ExcursionBindingModel { Id = addExcursion.ExcursionId, OperatorLogin = addExcursion.OperatorLogin });
+            if (excursion == null)
+            {
+                throw new Exception("Экскурсия не найдена");
+            }
+            guideStorage.AddExcursion(addExcursion);
         }
         
     }
