@@ -13,9 +13,11 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
     public class ExcursionLogic : IExcursionLogic
     {
         private readonly IExcursionStorage excursionStorage;
-        public ExcursionLogic(IExcursionStorage excursionStorage)
+        private readonly IGuideStorage guideStorage;
+        public ExcursionLogic(IExcursionStorage excursionStorage, IGuideStorage guideStorage)
         {
             this.excursionStorage = excursionStorage;
+            this.guideStorage = guideStorage;
         }
         public List<ExcursionViewModel> Read(ExcursionBindingModel model)
         {
@@ -49,5 +51,6 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
             }
             excursionStorage.Delete(model);
         }
+        
     }
 }

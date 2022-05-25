@@ -15,6 +15,6 @@ namespace TravelAgencyContracts.StoragesContracts
         ExcursionViewModel GetElement(ExcursionBindingModel model);
         void Insert(ExcursionBindingModel model);
         void Update(ExcursionBindingModel model);
-        void Delete(ExcursionBindingModel model);
+        void Delete(ExcursionBindingModel model);        
     }
 }

@@ -18,7 +18,7 @@ namespace TravelAgencyDatabaseImplements.Implements
             using (var context = new TravelAgencyDatabase())
             {
                 return context.Guides
-                .Include(rec => rec.ExcursionGuides).Include(rec => rec.TourGuides)
+                .Include(rec => rec.ExcursionGuides)
                 .Select(CreateModel)
                 .ToList();
             }
@@ -33,10 +33,8 @@ namespace TravelAgencyDatabaseImplements.Implements
             {
                 if(model.DateFrom.HasValue && model.DateTo.HasValue)
                 {
-                    return context.Guides.Include(rec => rec.ExcursionGuides).Include(rec => rec.TourGuides)
-                .Where(rec => rec.Date > model.DateFrom && rec.Date < model.DateTo
-                //&& !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin
-                )
+                    return context.Guides.Include(rec => rec.ExcursionGuides)                        
+                //.Where(rec => rec.Date > model.DateFrom && rec.Date < model.DateTo && !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
                 .Select(CreateModel)
                 .ToList();
                 }
@@ -60,7 +58,6 @@ namespace TravelAgencyDatabaseImplements.Implements
             {
                 var tt = GetFullList();
                 var guide = context.Guides
-                .Include(rec => rec.TourGuides)
                 .Include(rec => rec.ExcursionGuides)
                 //.Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
                 .FirstOrDefault(rec => rec.Id == model.Id);
@@ -103,7 +100,7 @@ namespace TravelAgencyDatabaseImplements.Implements
                 {
                     try
                     {
-                        var element = context.Guides.Include(rec => rec.TourGuides)
+                        var element = context.Guides
                             //.Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
                             .FirstOrDefault(rec => rec.Id == model.Id);
                         if (element == null)
@@ -126,7 +123,7 @@ namespace TravelAgencyDatabaseImplements.Implements
         {
             using (var context = new TravelAgencyDatabase())
             {
-                Guide element = context.Guides.Include(rec => rec.TourGuides)
+                Guide element = context.Guides
                     //.Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
                     .FirstOrDefault(rec => rec.Id == model.Id);
                 if (element != null)
@@ -148,9 +145,9 @@ namespace TravelAgencyDatabaseImplements.Implements
                 {
                     try
                     {
-                        if (context.ExcursionGuides.FirstOrDefault(rec => rec.GuideId == addExcursion.GuideId && rec.ExcursionId == addExcursion.ExcursionId) != null)
+                        if (context.ExcursionGuides.FirstOrDefault(rec => rec.ExcursionId == addExcursion.ExcursionId && rec.GuideId == addExcursion.GuideId) != null)
                         {
-                            var guideExcursion = context.ExcursionGuides.FirstOrDefault(rec => rec.GuideId == addExcursion.GuideId && rec.ExcursionId == addExcursion.ExcursionId);
+                            var guideExcursion = context.ExcursionGuides.FirstOrDefault(rec => rec.ExcursionId == addExcursion.ExcursionId && rec.GuideId == addExcursion.GuideId);
                             guideExcursion.ExcursionCount = addExcursion.ExcursionCount;
                         }
                         else

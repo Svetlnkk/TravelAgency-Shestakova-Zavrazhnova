@@ -58,7 +58,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
                     var excursion = excursionStorage.GetElement(new ExcursionBindingModel { Id = excursionG.Key });
                     record.Excursions.Add(excursion);
                 }
-                //record.Tours = tourStorage.GetFullList().Where(rec => rec.TourGuides.Keys.ToList().Contains(guide.Id)).ToList();
+                record.Tours = tourStorage.GetFullList().Where(rec => rec.GuideTours.Keys.ToList().Contains(guide.Id)).ToList();
                 list.Add(record);
             }
 
@@ -67,6 +67,27 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
 
         public List<ExcursionViewModel> GetTourExcursion(ReportOperatorBindingModel model)
         {
+            /*var tours = model.tours;
+            var list = new List<ReportTourExcursionViewModel>();
+            foreach (var tour in tours)
+            {
+                var record = new ReportTourExcursionViewModel
+                {
+                    TourName = tour.TourName,
+                    Excursions = new List<int>(),
+                    GuideName = string.Empty
+                };
+                foreach (var guideKVP in tour.GuideTours)
+                {
+                    var guide = guideStorage.GetElement(new GuideBindingModel { Id = guideKVP.Key });
+                    foreach (var excursion in guide.GuideExcursions)
+                    {
+                        record.Excursions.Add(excursion.Value.Item1);
+                        record.GuideName = guide.GuideName;
+                    }
+                }
+                list.Add(record);
+            }*/
             var list = new List<ExcursionViewModel>();
             var listExcurId = new List<int>();
             foreach (var tour in model.tours)
@@ -77,11 +98,12 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
                     listExcurId.AddRange(elem.GuideExcursions.Keys.ToList());
                 }
             }
+            list = listExcurId.Distinct().ToList().Select(rec => excursionStorage.GetElement(new ExcursionBindingModel { Id = rec })).ToList();
             return list;
         }
         public void saveGuidesToPdfFile(ReportOperatorBindingModel model)
         {            
-            saveToPdf.CreateDoc(new PdfInfo
+            saveToPdf.CreateDocOperator(new PdfInfo
             {
                 FileName = model.FileName,
                 Title = "Список гидов",
@@ -93,7 +115,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
        
         public void saveExcursionsToExcel(ReportOperatorBindingModel model)
         {
-            saveToExcel.CreateReport(new ExcelInfo()
+            saveToExcel.CreateReportOperator(new ExcelInfo()
             {
                 FileName = model.FileName,
                 Title = "Список экскурсий:",
@@ -102,7 +124,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
         }
         public void saveExcursionsToWord(ReportOperatorBindingModel model)
         {
-            saveToWord.CreateDoc(new WordInfo()
+            saveToWord.CreateDocOperator(new WordInfo()
             {
                 FileName = model.FileName,
                 Title = "Список экскурсий",

@@ -36,7 +36,9 @@ namespace TravelAgencyOperatorView
         {
             try
             {
-                var listGuide= guideLogic.Read(null);
+                GuideComboBox.ItemsSource= guideLogic.Read(null);
+                ExcursionListBox.ItemsSource = excursionLogic.Read(null);
+                /*var listGuide= guideLogic.Read(null);
                 if (listGuide != null)
                 {
                     GuideComboBox.ItemsSource = listGuide;
@@ -47,7 +49,7 @@ namespace TravelAgencyOperatorView
                 {
                     ExcursionListBox.ItemsSource = listExcursion;
                     ExcursionListBox.SelectedItem = null;
-                }
+                }*/
             }
             catch (Exception ex)
             {
@@ -83,12 +85,13 @@ namespace TravelAgencyOperatorView
                 guideLogic.AddExcursion(new AddGuideExcursionBindingModel
                 {
                     GuideId = i.Id,
-                    ExcursionId=excursionId,
+                    ExcursionId= excursionId,
                     ExcursionCount= Convert.ToInt32(CountBox.Text),
                     OperatorLogin=WindowAuthorization.AutorizedOperator
                 });
             }
             MessageBox.Show("Успешно");
+            Close();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)

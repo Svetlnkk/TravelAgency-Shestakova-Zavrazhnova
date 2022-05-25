@@ -20,7 +20,6 @@ namespace TravelAgencyBusinessLogic.MailWorker
         protected static int smtpClientPort;
         protected static string popHost;
         protected static int popPort;
-
         public void MailConfig(MailConfigBindingModel config)
         {
             MailKitWorker.mailLogin = config.MailLogin;
