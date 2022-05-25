@@ -47,10 +47,10 @@ namespace TravelAgencyTouristView
             ReportTripsWindow reportTripsWindow = App.Container.Resolve<ReportTripsWindow>();
             reportTripsWindow.ShowDialog();
         }
-        //private void ReportGuidesbyTripsClick(object sender, RoutedEventArgs e)
-        //{
-        //    ReportGuidesbyTripsWindow reportGuidesbyTripsWindow = App.Container.Resolve<ReportGuidesbyTripsWindow>();
-        //    reportGuidesbyTripsWindow.ShowDialog();
-        //}
+        private void ReportGuidesbyTripsClick(object sender, RoutedEventArgs e)
+        {
+            ReportGuidesByTripsWindow reportGuidesbyTripsWindow = App.Container.Resolve<ReportGuidesByTripsWindow>();
+            reportGuidesbyTripsWindow.ShowDialog();
+        }
     }
 }
