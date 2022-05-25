@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Microsoft.Win32;
 using TravelAgencyContracts.BussinessLogicsContracts;
 using TravelAgencyContracts.BindingModels;
+using Unity;
 
 namespace TravelAgencyOperatorView
 {
@@ -36,7 +37,7 @@ namespace TravelAgencyOperatorView
             textColumnName.Binding = new Binding("name");
             DataGrid.Columns.Add(textColumnName);
             DataGridTextColumn textColumnPrice = new DataGridTextColumn();
-            textColumnPrice.Header = "Цена обеда";
+            textColumnPrice.Header = "Цена";
             textColumnPrice.Binding = new Binding("price");
             DataGrid.Columns.Add(textColumnPrice);
             DataGridTextColumn textColumnExcursionName = new DataGridTextColumn();
@@ -113,7 +114,11 @@ namespace TravelAgencyOperatorView
                 MessageBox.Show("Дата начала должна быть меньше даты окончания", "Ошибка");
                 return;
             }
-            var dialog = new SaveFileDialog();
+            WindowMail windowMail = App.Container.Resolve<WindowMail>();
+            windowMail.DateAfter = DatePickerAfter.SelectedDate.Value;
+            windowMail.DateBefore = DatePickerBefore.SelectedDate.Value;
+            windowMail.ShowDialog();
+            /*var dialog = new SaveFileDialog();
             dialog.Filter = "pdf|*.pdf";
             if (dialog.ShowDialog() == true)
             {
@@ -123,7 +128,7 @@ namespace TravelAgencyOperatorView
                     DateTo = DatePickerBefore.SelectedDate,
                     FileName = dialog.FileName
                 });
-            }
+            }*/
         }
     }
 }

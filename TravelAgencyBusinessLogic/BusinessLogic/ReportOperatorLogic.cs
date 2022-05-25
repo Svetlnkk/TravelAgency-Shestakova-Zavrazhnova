@@ -103,7 +103,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
         }
         public void saveGuidesToPdfFile(ReportOperatorBindingModel model)
         {            
-            saveToPdf.CreateDoc(new PdfInfo
+            saveToPdf.CreateDocOperator(new PdfInfo
             {
                 FileName = model.FileName,
                 Title = "Список гидов",
@@ -115,7 +115,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
        
         public void saveExcursionsToExcel(ReportOperatorBindingModel model)
         {
-            saveToExcel.CreateReport(new ExcelInfo()
+            saveToExcel.CreateReportOperator(new ExcelInfo()
             {
                 FileName = model.FileName,
                 Title = "Список экскурсий:",
@@ -124,7 +124,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
         }
         public void saveExcursionsToWord(ReportOperatorBindingModel model)
         {
-            saveToWord.CreateDoc(new WordInfo()
+            saveToWord.CreateDocOperator(new WordInfo()
             {
                 FileName = model.FileName,
                 Title = "Список экскурсий",

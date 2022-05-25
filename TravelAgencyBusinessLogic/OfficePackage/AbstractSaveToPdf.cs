@@ -66,6 +66,42 @@ namespace TravelAgencyBusinessLogic.OfficePackage
             }
             SavePdf(info);
         }
+        public void CreateDocOperator(PdfInfo info)
+        {
+            CreatePdf(info);
+            CreateParagraph(new PdfParagraph
+            {
+                Text = info.Title,
+                Style = "NormalTitle"
+            });
+            CreateParagraph(new PdfParagraph
+            {
+                Text = $"с { info.DateAfter.ToShortDateString() } по { info.DateBefore.ToShortDateString() }",
+                Style = "Normal"
+            });
+            CreateTable(new List<string> { "2cm", "2cm", "5cm", "3cm", "3cm" });
+            CreateRow(new PdfRowParameters
+            {
+                Texts = new List<string> { "Дата", "Имя гида", "Зарплата", "Название тура", "Экскурсии" },
+                Style = "NormalTitle",
+                ParagraphAlignment = PdfParagraphAlignmentType.Center
+            });
+            foreach (var guide in info.Guides)
+            {
+                CreateRow(new PdfRowParameters
+                {
+
+                    Texts = new List<string> { guide.DateCreate.ToShortDateString(),
+                                                guide.GuideName,
+                                                guide.Cost.ToString(),
+                                                string.Join(", ",guide.Tours.Select(lp => lp.TourName).ToList()),
+                                                string.Join(", ",guide.Excursions.Select(dep => dep.Name).ToList())},
+                    Style = "Normal",
+                    ParagraphAlignment = PdfParagraphAlignmentType.Left
+                });
+            }
+            SavePdf(info);
+        }
         protected abstract void CreatePdf(PdfInfo info);
         protected abstract void CreateParagraph(PdfParagraph paragraph);
         protected abstract void CreateTable(List<string> columns);
