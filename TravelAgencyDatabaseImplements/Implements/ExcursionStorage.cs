@@ -27,7 +27,9 @@ namespace TravelAgencyDatabaseImplements.Implements
                 return null;
             }
             using var context = new TravelAgencyDatabase();
-            return context.Excursions.Where(rec => rec.Name == model.Name /*&& rec.TouristLogin == TouristStorage.AutorizedWorker*/).Select(CreateModel).ToList();
+            return context.Excursions
+               // .Where(rec => !String.IsNullOrEmpty(model.TouristLogin) && rec.TouristLogin == model.TouristLogin)
+                .Select(CreateModel).ToList();
         }
         public ExcursionViewModel GetElement(ExcursionBindingModel model)
         {

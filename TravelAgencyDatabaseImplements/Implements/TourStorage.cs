@@ -48,10 +48,7 @@ namespace TravelAgencyDatabaseImplements.Implements
             {
                 var tour = context.Tours
                     .Include(rec => rec.TourGuides)
-<<<<<<< HEAD
                     //.Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
-=======
->>>>>>> 7be716176c1c2dd3f5a64ea2fad0af8bb7d3a2ce
                 .FirstOrDefault(rec => rec.Id == model.Id);
                 return tour != null ? CreateModel(tour) : null;
             }
