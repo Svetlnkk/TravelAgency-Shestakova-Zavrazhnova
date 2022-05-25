@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TravelAgencyTouristView"
         mc:Ignorable="d"
-        Title="Обед" Height="380" Width="800" MinHeight="200" MinWidth="600" Loaded="TripWindowLoad">
+        Title="Путешествие" Height="380" Width="800" MinHeight="200" MinWidth="600" Loaded="TripWindowLoad">
     <Grid>
 
         <Grid.RowDefinitions>

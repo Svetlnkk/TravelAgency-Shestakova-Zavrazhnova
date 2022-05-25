@@ -25,7 +25,7 @@ namespace TravelAgencyBusinessLogic.OfficePackage
             CreateTable(new List<string> { "2cm", "2cm", "5cm", "3cm" });
             CreateRow(new PdfRowParameters
             {
-                Texts = new List<string> { "Дата путешествия", "Название путешествия", "Имя гида", "Название места" },
+                Texts = new List<string> { "Дата путешествия", "Название путешествия", "Имя гида", "Название экскурсии" },
                 Style = "NormalTitle",
                 ParagraphAlignment = PdfParagraphAlignmentType.Center
             });

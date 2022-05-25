@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Microsoft.Win32;
 using TravelAgencyContracts.BussinessLogicsContracts;
 using TravelAgencyContracts.BindingModels;
+using Unity;
 
 namespace TravelAgencyTouristView
 {
@@ -59,10 +60,10 @@ namespace TravelAgencyTouristView
                 MessageBox.Show("Дата начала должна быть меньше даты окончания", "Ошибка");
                 return;
             }
-            //SendMailWindow sendMailWindow = App.Container.Resolve<SendMailWindow>();
-            //sendMailWindow.DateAfter = DatePickerAfter.SelectedDate.Value;
-            //sendMailWindow.DateBefore = DatePickerBefore.SelectedDate.Value;
-            //sendMailWindow.ShowDialog();
+            SendMailWindow sendMailWindow = App.Container.Resolve<SendMailWindow>();
+            sendMailWindow.DateAfter = DatePickerAfter.SelectedDate.Value;
+            sendMailWindow.DateBefore = DatePickerBefore.SelectedDate.Value;
+            sendMailWindow.ShowDialog();
         }
         private void ShowClick(object sender, RoutedEventArgs e)
         {

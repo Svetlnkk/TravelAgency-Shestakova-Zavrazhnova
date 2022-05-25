@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TravelAgencyTouristView"
         mc:Ignorable="d"
-        Title="Столовые приборы" Height="400" Width="600" MinHeight="200" MinWidth="300" Loaded="PlacesWindowLoaded">
+        Title="Посещенные места" Height="400" Width="600" MinHeight="200" MinWidth="300" Loaded="PlacesWindowLoaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>

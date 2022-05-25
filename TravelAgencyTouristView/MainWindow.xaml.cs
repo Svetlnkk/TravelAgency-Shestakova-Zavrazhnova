@@ -12,9 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-// using TravelAgencyBusinessLogic.OfficePackage.Implements;
-using TravelAgencyContracts.BussinessLogicsContracts;
+using System.Configuration;
 using Unity;
+using TravelAgencyBusinessLogic.MailWorker;
+using TravelAgencyContracts.BindingModels;
 
 namespace TravelAgencyTouristView
 {
@@ -26,6 +27,16 @@ namespace TravelAgencyTouristView
         public MainWindow()
         {
             InitializeComponent();
+            var mailSender = new MailKitWorker();
+            mailSender.MailConfig(new MailConfigBindingModel
+            {
+                MailLogin = ConfigurationManager.AppSettings["MailLogin"],
+                MailPassword = ConfigurationManager.AppSettings["MailPassword"],
+                SmtpClientHost = ConfigurationManager.AppSettings["SmtpClientHost"],
+                SmtpClientPort = Convert.ToInt32(ConfigurationManager.AppSettings["SmtpClientPort"]),
+                PopHost = ConfigurationManager.AppSettings["PopHost"],
+                PopPort = Convert.ToInt32(ConfigurationManager.AppSettings["PopPort"])
+            });
         }
         private void ExcursionsClick(object sender, RoutedEventArgs e)
         {
