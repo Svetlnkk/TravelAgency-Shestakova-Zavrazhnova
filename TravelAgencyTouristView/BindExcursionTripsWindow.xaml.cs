@@ -32,13 +32,13 @@ namespace TravelAgencyTouristView
         }
         private void LoadData()
         {
-            var listTrip = tripLogic.Read(null);
+            var listTrip = tripLogic.Read(new TripBindingModel { TouristLogin = AuthorizationWindow.AutorizedTourist });
             if (listTrip != null)
             {
                 TripsListBox.ItemsSource = listTrip;
                 TripsListBox.SelectedItem = null;
             }
-            var listExcursion = excursionLogic.Read(null);
+            var listExcursion = excursionLogic.Read(new ExcursionBindingModel { TouristLogin = AuthorizationWindow.AutorizedTourist });
             if (listTrip != null)
             {
                 ExcursionsListBox.ItemsSource = listExcursion;
@@ -73,7 +73,13 @@ namespace TravelAgencyTouristView
             int excursionId = ((ExcursionViewModel)ExcursionsListBox.SelectedItem).Id;
             foreach(TripViewModel i in TripsListBox.SelectedItems)
             {
-                tripLogic.AddExcursion((i.Id, (excursionId, Convert.ToInt32(CountBox.Text))));
+                tripLogic.AddExcursion(new AddTripExcursionBindingModel
+                {
+                    TripId = i.Id,
+                    ExcursionId = excursionId,
+                    ExcursionCount = Convert.ToInt32(CountBox.Text),
+                    TouristLogin = AuthorizationWindow.AutorizedTourist
+                });
             }
             MessageBox.Show("Привязка создана");
         }

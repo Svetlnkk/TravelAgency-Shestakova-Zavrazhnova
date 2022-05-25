@@ -43,7 +43,7 @@ namespace TravelAgencyTouristView
             {
                 try
                 {
-                    var view = tripLogic.Read(new TripBindingModel { Id = id })?[0];
+                    var view = tripLogic.Read(new TripBindingModel { Id = id, TouristLogin = AuthorizationWindow.AutorizedTourist })?[0];
                     if (view != null)
                     {
                         NameBox.Text = view.Name.ToString();
@@ -107,7 +107,8 @@ namespace TravelAgencyTouristView
                 Id = id,
                 Name = name,
                 Date = date,
-                TripTours = tripTours
+                TripTours = tripTours,
+                TouristLogin = AuthorizationWindow.AutorizedTourist
             });
             this.Close();
         }

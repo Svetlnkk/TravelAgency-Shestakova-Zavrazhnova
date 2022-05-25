@@ -13,7 +13,6 @@ namespace TravelAgencyDatabaseImplements.Implements
 {
     public class TouristStorage : ITouristStorage
     {
-        public static string AutorizedWorker;
         public bool Registered(TouristBindingModel model)
         {
             using var context = new TravelAgencyDatabase();
@@ -44,12 +43,7 @@ namespace TravelAgencyDatabaseImplements.Implements
             {
                 return false;
             }
-            AutorizedWorker = model.Login;
             return true;
-        }
-        public TouristBindingModel GetAutorizedWorker()
-        {
-            return GetElement(new TouristBindingModel() { Login = AutorizedWorker });
         }
         public TouristBindingModel GetElement(TouristBindingModel model)
         {

@@ -13,6 +13,6 @@ namespace TravelAgencyContracts.BussinessLogicsContracts
         List<TripViewModel> Read(TripBindingModel model);
         void CreateOrUpdate(TripBindingModel model);
         void Delete(TripBindingModel model);
-        void AddExcursion((int, (int, int)) addedExcursion);
+        void AddExcursion(AddTripExcursionBindingModel addedExcursion);
     }
 }

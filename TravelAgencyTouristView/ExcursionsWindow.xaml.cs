@@ -32,7 +32,7 @@ namespace TravelAgencyTouristView
         }
         private void LoadData()
         {
-            var list = excursionLogic.Read(null);
+            var list = excursionLogic.Read(new ExcursionBindingModel { TouristLogin = AuthorizationWindow.AutorizedTourist });
             if (list != null)
             {
                 ExcursionsData.ItemsSource = list;
@@ -63,7 +63,7 @@ namespace TravelAgencyTouristView
                 return;
             }
             int selecctedExcursionId = ((ExcursionViewModel)ExcursionsData.SelectedItem).Id;
-            excursionLogic.Delete(new ExcursionBindingModel { Id = selecctedExcursionId});
+            excursionLogic.Delete(new ExcursionBindingModel { Id = selecctedExcursionId, TouristLogin = AuthorizationWindow.AutorizedTourist });
             LoadData();
         }
         private void UpdateExcursionClick(object sender, RoutedEventArgs e)

@@ -33,7 +33,7 @@ namespace TravelAgencyTouristView
         }
         private void LoadData()
         {
-            var list = tripLogic.Read(null);
+            var list = tripLogic.Read(new TripBindingModel { TouristLogin = AuthorizationWindow.AutorizedTourist });
             if (list != null)
             {
                 TripsData.ItemsSource = list;
@@ -66,7 +66,7 @@ namespace TravelAgencyTouristView
                 return;
             }
             int selecctedTripId = ((TripViewModel)TripsData.SelectedItem).Id;
-            tripLogic.Delete(new TripBindingModel { Id = selecctedTripId });
+            tripLogic.Delete(new TripBindingModel { Id = selecctedTripId, TouristLogin = AuthorizationWindow.AutorizedTourist });
             LoadData();
         }
         private void UpdateTripClick(object sender, RoutedEventArgs e)

@@ -41,7 +41,8 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
             var trips = tripStorage.GetFilteredList(new TripBindingModel
             {
                 after = model.DateAfter,
-                before = model.DateBefore
+                before = model.DateBefore,
+                TouristLogin = model.TouristLogin
             });
             foreach (var trip in trips)
             {
@@ -57,10 +58,12 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
                 foreach (var elem in tripTours)
                 {
                    listGuideIds.AddRange(elem.GuideTours.Keys.ToList());
+
                 }
                 record.Guides = listGuideIds.Distinct().ToList().Select(rec => guideStorage.GetElement(new GuideBindingModel { Id = rec })).ToList();
                 var tripExcursions = trip.TripExcursions.Keys.ToList();
-                var tripPlaces = placeStorage.GetFullList().Where(rec => tripExcursions.Contains(rec.PlaceExcursion)).ToList();
+                var tripPlaces = placeStorage.GetFilteredList(new PlaceBindingModel { TouristLogin = model.TouristLogin }).Where(rec => tripExcursions.Contains(rec.PlaceExcursion)).ToList();
+                record.Places = tripPlaces;
                 record.Places = tripPlaces;
                 list.Add(record);
             }
@@ -69,7 +72,6 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
         
         public void saveTripsToPdfFile(ReportBindingModel model)
         {
-            var worker = workerStorage.GetAutorizedWorker();
             saveToPdf.CreateDoc(new PdfInfo
             {
                 FileName = model.FileName,

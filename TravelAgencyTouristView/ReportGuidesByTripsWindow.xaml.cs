@@ -24,12 +24,12 @@ namespace TravelAgencyTouristView
     /// </summary>
     public partial class ReportGuidesByTripsWindow : Window
     {
-        private readonly ITripStorage tripStorage;
+        private readonly ITripLogic tripLogic;
         private readonly IReportLogic reportLogic;
-        public ReportGuidesByTripsWindow(ITripStorage tripStorage, IReportLogic reportLogic)
+        public ReportGuidesByTripsWindow(ITripLogic tripLogic, IReportLogic reportLogic)
         {
             InitializeComponent();
-            this.tripStorage = tripStorage;
+            this.tripLogic = tripLogic;
             this.reportLogic = reportLogic;
         }
         private void CancelClick(object sender, RoutedEventArgs e)
@@ -38,7 +38,7 @@ namespace TravelAgencyTouristView
         }
         private void LoadData()
         {
-            var list = tripStorage.GetFullList();
+            var list = tripLogic.Read(new TripBindingModel { TouristLogin = AuthorizationWindow.AutorizedTourist });
             if (list != null)
             {
                 TripsListBox.ItemsSource = list;
@@ -57,7 +57,7 @@ namespace TravelAgencyTouristView
                 var dialog = new SaveFileDialog();
                 dialog.Filter = "xlsx|*.xlsx";
                 if (dialog.ShowDialog() == true) {
-                    reportLogic.saveGuidesToExcel(new ReportBindingModel() { FileName = dialog.FileName, trips = list});
+                    reportLogic.saveGuidesToExcel(new ReportBindingModel() { FileName = dialog.FileName, trips = list, TouristLogin = AuthorizationWindow.AutorizedTourist });
                 }
                 MessageBox.Show("Файл успешно сохранен");
             }
@@ -75,7 +75,7 @@ namespace TravelAgencyTouristView
                 dialog.Filter = "docx|*.docx";
                 if (dialog.ShowDialog() == true)
                 {
-                    reportLogic.saveGuidesToWord(new ReportBindingModel() { FileName = dialog.FileName, trips = list });
+                    reportLogic.saveGuidesToWord(new ReportBindingModel() { FileName = dialog.FileName, trips = list, TouristLogin = AuthorizationWindow.AutorizedTourist });
                 }
                 MessageBox.Show("Файл успешно сохранен");
             }

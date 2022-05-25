@@ -16,7 +16,7 @@ namespace TravelAgencyDatabaseImplements.Implements
         public List<TripViewModel> GetFullList()
         {
             using var context = new TravelAgencyDatabase();
-            return context.Trips.Include(rec => rec.TripTours).Include(rec => rec.TripExcursions).Where(rec => rec.TouristLogin == TouristStorage.AutorizedWorker).Select(CreateModel).ToList();
+            return context.Trips.Include(rec => rec.TripTours).Include(rec => rec.TripExcursions).Select(CreateModel).ToList();
         }
         public List<TripViewModel> GetFilteredList(TripBindingModel model)
         {
@@ -25,8 +25,21 @@ namespace TravelAgencyDatabaseImplements.Implements
                 return null;
             }
             using var context = new TravelAgencyDatabase();
-            return context.Trips.Include(rec => rec.TripTours).Include(rec => rec.TripExcursions).Where(rec => rec.Id == model.Id && rec.TouristLogin == TouristStorage.AutorizedWorker ||
-                rec.Date > model.after && rec.Date < model.before && rec.TouristLogin == TouristStorage.AutorizedWorker).Select(CreateModel).ToList();
+            if (model.after.HasValue && model.before.HasValue)
+            {
+                return context.Trips.Include(rec => rec.TripTours).Include(rec => rec.TripExcursions)
+                    .Where(rec =>
+                        !String.IsNullOrEmpty(model.TouristLogin) && rec.TouristLogin == model.TouristLogin &&
+                        rec.Date > model.after && rec.Date < model.before)
+                        .Select(CreateModel).ToList();
+            }
+            else
+            {
+                return context.Trips.Include(rec => rec.TripTours).Include(rec => rec.TripExcursions)
+                    .Where(rec =>
+                        !String.IsNullOrEmpty(model.TouristLogin) && rec.TouristLogin == model.TouristLogin)
+                        .Select(CreateModel).ToList();
+            }
         }
         public TripViewModel GetElement(TripBindingModel model)
         {
@@ -35,7 +48,10 @@ namespace TravelAgencyDatabaseImplements.Implements
                 return null;
             }
             using var context = new TravelAgencyDatabase();
-            var trip = context.Trips.Include(rec => rec.TripTours).Include(rec => rec.TripExcursions).Where(rec => rec.TouristLogin == TouristStorage.AutorizedWorker).FirstOrDefault(rec => rec.Id == model.Id);
+            var tt = GetFullList();
+            var trip = context.Trips.Include(rec => rec.TripTours).Include(rec => rec.TripExcursions).Where(rec =>
+                !String.IsNullOrEmpty(model.TouristLogin) && rec.TouristLogin == model.TouristLogin)
+                .FirstOrDefault(rec => rec.Id == model.Id);
             return trip != null ? CreateModel(trip) : null;
         }
         public void Insert(TripBindingModel model)
@@ -48,7 +64,7 @@ namespace TravelAgencyDatabaseImplements.Implements
                 {
                     Name = model.Name,
                     Date = model.Date,
-                    TouristLogin = TouristStorage.AutorizedWorker
+                    TouristLogin = model.TouristLogin
                 };
                 context.Trips.Add(trip);
                 context.SaveChanges();
@@ -67,7 +83,9 @@ namespace TravelAgencyDatabaseImplements.Implements
             using var transaction = context.Database.BeginTransaction();
             try
             {
-                var element = context.Trips.Include(rec => rec.TripTours).Where(rec => rec.TouristLogin == TouristStorage.AutorizedWorker).FirstOrDefault(rec => rec.Id == model.Id);
+                var element = context.Trips.Include(rec => rec.TripTours).Where(rec =>
+                    !String.IsNullOrEmpty(model.TouristLogin) && rec.TouristLogin == model.TouristLogin)
+                    .FirstOrDefault(rec => rec.Id == model.Id);
                 if (element == null)
                 {
                     throw new Exception("Элемент не найден");
@@ -85,7 +103,9 @@ namespace TravelAgencyDatabaseImplements.Implements
         public void Delete(TripBindingModel model)
         {
             using var context = new TravelAgencyDatabase();
-            Trip element = context.Trips.Include(rec => rec.TripTours).Where(rec => rec.TouristLogin == TouristStorage.AutorizedWorker).FirstOrDefault(rec => rec.Id == model.Id);
+            Trip element = context.Trips.Include(rec => rec.TripTours).Where(rec =>
+                !String.IsNullOrEmpty(model.TouristLogin) && rec.TouristLogin == model.TouristLogin)
+                .FirstOrDefault(rec => rec.Id == model.Id);
             if (element != null)
             {
                 context.Trips.Remove(element);
@@ -96,20 +116,20 @@ namespace TravelAgencyDatabaseImplements.Implements
                 throw new Exception("Элемент не найден");
             }
         }
-        public void AddExcursion((int, (int, int)) addedExcursion)
+        public void AddExcursion(AddTripExcursionBindingModel addedExcursion)
         {
             using var context = new TravelAgencyDatabase();
             using var transaction = context.Database.BeginTransaction();
             try
             {
-                if (context.TripExcursions.FirstOrDefault(rec => rec.TripId == addedExcursion.Item1 && rec.ExcursionId == addedExcursion.Item2.Item1) != null)
+                if (context.TripExcursions.FirstOrDefault(rec => rec.TripId == addedExcursion.TripId && rec.ExcursionId == addedExcursion.ExcursionId) != null)
                 {
-                    var tripExcursion = context.TripExcursions.FirstOrDefault(rec => rec.TripId == addedExcursion.Item1 && rec.ExcursionId == addedExcursion.Item2.Item1);
-                    tripExcursion.ExcursionCount = addedExcursion.Item2.Item2;
+                    var tripExcursion = context.TripExcursions.FirstOrDefault(rec => rec.TripId == addedExcursion.TripId && rec.ExcursionId == addedExcursion.ExcursionId);
+                    tripExcursion.ExcursionCount = addedExcursion.ExcursionCount;
                 }
                 else
                 {
-                    context.TripExcursions.Add(new TripExcursions { TripId = addedExcursion.Item1, ExcursionId = addedExcursion.Item2.Item1, ExcursionCount = addedExcursion.Item2.Item2 });
+                    context.TripExcursions.Add(new TripExcursions { TripId = addedExcursion.TripId, ExcursionId = addedExcursion.ExcursionId, ExcursionCount = addedExcursion.ExcursionCount });
                 }
                 context.SaveChanges();
                 transaction.Commit();

@@ -16,7 +16,7 @@ namespace TravelAgencyDatabaseImplements.Implements
         public List<PlaceViewModel> GetFullList()
         {
             using var context = new TravelAgencyDatabase();
-            return context.Places.Where(rec => rec.TouristLogin == TouristStorage.AutorizedWorker).Select(CreateModel).ToList();
+            return context.Places.Select(CreateModel).ToList();
         }
         public List<PlaceViewModel> GetFilteredList(PlaceBindingModel model)
         {
@@ -25,7 +25,9 @@ namespace TravelAgencyDatabaseImplements.Implements
                 return null;
             }
             using var context = new TravelAgencyDatabase();
-            return context.Places.Where(rec => rec.ExcursionId == model.PlaceExcursion && rec.TouristLogin == TouristStorage.AutorizedWorker).Select(CreateModel).ToList();
+            return context.Places.Where(rec =>
+                            !String.IsNullOrEmpty(model.TouristLogin) && rec.TouristLogin == model.TouristLogin)
+                            .Select(CreateModel).ToList();
         }
         public PlaceViewModel GetElement(PlaceBindingModel model)
         {
@@ -34,7 +36,7 @@ namespace TravelAgencyDatabaseImplements.Implements
                 return null;
             }
             using var context = new TravelAgencyDatabase();
-            var place = context.Places.Where(rec => rec.TouristLogin == TouristStorage.AutorizedWorker).FirstOrDefault(rec => rec.Id == model.Id);
+            var place = context.Places.Where(rec => !String.IsNullOrEmpty(model.TouristLogin) && rec.TouristLogin == model.TouristLogin).FirstOrDefault(rec => rec.Id == model.Id);
             return place != null ? CreateModel(place) : null;
         }
         public void Insert(PlaceBindingModel model)
@@ -47,7 +49,7 @@ namespace TravelAgencyDatabaseImplements.Implements
                 {
                     Name = model.Name,
                     DateOfVisit = model.DateOfVisit,
-                    TouristLogin = TouristStorage.AutorizedWorker,
+                    TouristLogin = model.TouristLogin,
                     ExcursionId = model.PlaceExcursion,
                     Excursion = context.Excursions.FirstOrDefault(rec => rec.Id == model.PlaceExcursion)
                 };
@@ -67,8 +69,9 @@ namespace TravelAgencyDatabaseImplements.Implements
             using var transaction = context.Database.BeginTransaction();
             try
             {
-                var element = context.Places.Where(rec => rec.TouristLogin == TouristStorage.AutorizedWorker).FirstOrDefault(rec => rec.Id == model.Id);
-                if (element == null)
+                var element = context.Places.Where(rec =>
+                                    !String.IsNullOrEmpty(model.TouristLogin) && rec.TouristLogin == model.TouristLogin)
+                                    .FirstOrDefault(rec => rec.Id == model.Id); if (element == null)
                 {
                     throw new Exception("Элемент не найден");
                 }
@@ -88,7 +91,9 @@ namespace TravelAgencyDatabaseImplements.Implements
         public void Delete(PlaceBindingModel model)
         {
             using var context = new TravelAgencyDatabase();
-            Place element = context.Places.Where(rec => rec.TouristLogin == TouristStorage.AutorizedWorker).FirstOrDefault(rec => rec.Id == model.Id);
+            Place element = context.Places.Where(rec =>
+                !String.IsNullOrEmpty(model.TouristLogin) && rec.TouristLogin == model.TouristLogin)
+                .FirstOrDefault(rec => rec.Id == model.Id);
             if (element != null)
             {
                 context.Places.Remove(element);

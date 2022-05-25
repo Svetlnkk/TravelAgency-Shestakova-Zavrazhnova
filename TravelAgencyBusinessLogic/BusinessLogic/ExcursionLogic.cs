@@ -42,7 +42,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
         }
         public void Delete(ExcursionBindingModel model)
         {
-            var element = excursionStorage.GetElement(new ExcursionBindingModel { Id = model.Id });
+            var element = excursionStorage.GetElement(model);
             if (element == null)
             {
                 throw new Exception("Элмент не найден");

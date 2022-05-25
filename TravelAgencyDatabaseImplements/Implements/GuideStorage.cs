@@ -34,15 +34,16 @@ namespace TravelAgencyDatabaseImplements.Implements
                 if(model.DateFrom.HasValue && model.DateTo.HasValue)
                 {
                     return context.Guides.Include(rec => rec.ExcursionGuides).Include(rec => rec.TourGuides)
-                .Where(rec => rec.Date > model.DateFrom && rec.Date < model.DateTo &&
-                !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                .Where(rec => rec.Date > model.DateFrom && rec.Date < model.DateTo
+                //&& !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin
+                )
                 .Select(CreateModel)
                 .ToList();
                 }
                 else
                 {
                     return context.Guides.Include(rec => rec.ExcursionGuides).Include(rec => rec.TourGuides)
-                .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                //.Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
                 .Select(CreateModel)
                 .ToList();
                 }
@@ -61,7 +62,7 @@ namespace TravelAgencyDatabaseImplements.Implements
                 var guide = context.Guides
                 .Include(rec => rec.TourGuides)
                 .Include(rec => rec.ExcursionGuides)
-                .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                //.Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
                 .FirstOrDefault(rec => rec.Id == model.Id);
                 return guide != null ? CreateModel(guide) : null;
             }
@@ -103,7 +104,7 @@ namespace TravelAgencyDatabaseImplements.Implements
                     try
                     {
                         var element = context.Guides.Include(rec => rec.TourGuides)
-                            .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                            //.Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
                             .FirstOrDefault(rec => rec.Id == model.Id);
                         if (element == null)
                         {
@@ -126,7 +127,7 @@ namespace TravelAgencyDatabaseImplements.Implements
             using (var context = new TravelAgencyDatabase())
             {
                 Guide element = context.Guides.Include(rec => rec.TourGuides)
-                    .Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
+                    //.Where(rec => !String.IsNullOrEmpty(model.OperatorLogin) && rec.OperatorLogin == model.OperatorLogin)
                     .FirstOrDefault(rec => rec.Id == model.Id);
                 if (element != null)
                 {

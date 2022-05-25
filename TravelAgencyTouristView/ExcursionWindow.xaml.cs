@@ -36,7 +36,7 @@ namespace TravelAgencyTouristView
             {
                 try
                 {
-                    var view = excursionLogic.Read(new ExcursionBindingModel { Id = id })?[0];
+                    var view = excursionLogic.Read(new ExcursionBindingModel { Id = id, TouristLogin = AuthorizationWindow.AutorizedTourist })?[0];
                     if (view != null)
                     {
                         NameBox.Text = view.Name;
@@ -66,7 +66,7 @@ namespace TravelAgencyTouristView
             string type = TypeBox.Text;
             int time = Convert.ToInt32(TimeBox.Text);
             int price = Convert.ToInt32(PriceBox.Text);
-            excursionLogic.CreateOrUpdate(new ExcursionBindingModel { Id = id, Name = name, Type = type, Time = time, Price = price });
+            excursionLogic.CreateOrUpdate(new ExcursionBindingModel { Id = id, Name = name, Type = type, Time = time, Price = price, TouristLogin = AuthorizationWindow.AutorizedTourist });
             this.Close();
         }
     }

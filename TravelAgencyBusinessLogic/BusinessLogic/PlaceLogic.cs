@@ -42,7 +42,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
         }
         public void Delete(PlaceBindingModel model)
         {
-            var element = placeStorage.GetElement(new PlaceBindingModel { Id = model.Id });
+            var element = placeStorage.GetElement(model);
             if (element == null)
             {
                 throw new Exception("Элмент не найден");

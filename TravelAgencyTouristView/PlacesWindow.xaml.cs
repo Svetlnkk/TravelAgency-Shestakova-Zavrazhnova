@@ -31,7 +31,7 @@ namespace TravelAgencyTouristView
         }
         private void LoadData()
         {
-            var list = placeLogic.Read(null);
+            var list = placeLogic.Read(new PlaceBindingModel { TouristLogin = AuthorizationWindow.AutorizedTourist });
             if (list != null)
             {
                 PlacesData.ItemsSource = list;
@@ -61,7 +61,7 @@ namespace TravelAgencyTouristView
                 return;
             }
             int selecctedPlaceId = ((PlaceViewModel)PlacesData.SelectedItem).Id;
-            placeLogic.Delete(new PlaceBindingModel { Id = selecctedPlaceId });
+            placeLogic.Delete(new PlaceBindingModel { Id = selecctedPlaceId, TouristLogin = AuthorizationWindow.AutorizedTourist });
             LoadData();
         }
         private void UpdatePlaceClick(object sender, RoutedEventArgs e)

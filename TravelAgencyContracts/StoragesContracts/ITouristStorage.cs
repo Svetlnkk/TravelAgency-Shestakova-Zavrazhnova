@@ -10,7 +10,6 @@ namespace TravelAgencyContracts.StoragesContracts
 {
     public interface ITouristStorage
     {
-        TouristBindingModel GetAutorizedWorker();
         bool Registered(TouristBindingModel model);
         void Insert(TouristBindingModel model);
         bool Login(TouristBindingModel model);

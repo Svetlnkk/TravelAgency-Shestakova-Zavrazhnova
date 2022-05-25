@@ -16,6 +16,6 @@ namespace TravelAgencyContracts.StoragesContracts
         void Insert(TripBindingModel model);
         void Update(TripBindingModel model);
         void Delete(TripBindingModel model);
-        void AddExcursion((int, (int, int)) addExcursion);
+        void AddExcursion(AddTripExcursionBindingModel addExcursion);
     }
 }

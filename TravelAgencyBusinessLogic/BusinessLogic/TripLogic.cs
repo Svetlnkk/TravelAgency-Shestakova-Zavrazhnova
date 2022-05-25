@@ -44,21 +44,21 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
         }
         public void Delete(TripBindingModel model)
         {
-            var element = tripStorage.GetElement(new TripBindingModel { Id = model.Id });
+            var element = tripStorage.GetElement(model);
             if (element == null)
             {
                 throw new Exception("Элемент не найден");
             }
             tripStorage.Delete(model);
         }
-        public void AddExcursion((int, (int, int)) addedExcursion)
+        public void AddExcursion(AddTripExcursionBindingModel addedExcursion)
         {
-            var trip = tripStorage.GetElement(new TripBindingModel { Id = addedExcursion.Item1 });
+            var trip = tripStorage.GetElement(new TripBindingModel { Id = addedExcursion.TripId, TouristLogin = addedExcursion.TouristLogin });
             if (trip == null)
             {
                 throw new Exception("Путешествие не найдено");
             }
-            var excursion = excursionStorage.GetElement(new ExcursionBindingModel { Id = addedExcursion.Item2.Item1 });
+            var excursion = excursionStorage.GetElement(new ExcursionBindingModel { Id = addedExcursion.ExcursionId, TouristLogin = addedExcursion.TouristLogin });
             if (excursion == null)
             {
                 throw new Exception("Экскурсия не найдена");

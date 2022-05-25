@@ -34,7 +34,7 @@ namespace TravelAgencyTouristView
         }
         private void PlaceWindowLoad(object sender, RoutedEventArgs e)
         {
-            var list = excursionLogic.Read(null);
+            var list = excursionLogic.Read(new ExcursionBindingModel {TouristLogin = AuthorizationWindow.AutorizedTourist });
             ExcursionsComboBox.ItemsSource = list;
             ExcursionsComboBox.SelectedItem = null;
             //ExcursionsComboBox.DisplayMemberPath = "Calorie";
@@ -42,7 +42,7 @@ namespace TravelAgencyTouristView
             {
                 try
                 {
-                    var view = placeLogic.Read(new PlaceBindingModel { Id = id })?[0];
+                    var view = placeLogic.Read(new PlaceBindingModel { Id = id, TouristLogin = AuthorizationWindow.AutorizedTourist })?[0];
                     if (view != null)
                     {
                         NameBox.Text = view.Name;
@@ -75,7 +75,9 @@ namespace TravelAgencyTouristView
             string name = NameBox.Text;
             DateTime date = (DateTime)DatePicker.SelectedDate;
             placeLogic.CreateOrUpdate(new PlaceBindingModel { Id = id, Name = name, 
-                DateOfVisit = date, PlaceExcursion = ((ExcursionViewModel)ExcursionsComboBox.SelectedItem).Id});
+                DateOfVisit = date, PlaceExcursion = ((ExcursionViewModel)ExcursionsComboBox.SelectedItem).Id,
+                TouristLogin = AuthorizationWindow.AutorizedTourist
+            });
             this.Close();
         }
     }
