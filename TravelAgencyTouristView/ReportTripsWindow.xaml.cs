@@ -36,8 +36,8 @@ namespace TravelAgencyTouristView
             textColumnName.Binding = new Binding("name");
             DataGrid.Columns.Add(textColumnName);
             DataGridTextColumn textColumnPlaceName = new DataGridTextColumn();
-            textColumnPlaceName.Header = "Название посещенного места";
-            textColumnPlaceName.Binding = new Binding("placeName");
+            textColumnPlaceName.Header = "Название экскурсии";
+            textColumnPlaceName.Binding = new Binding("excursionName");
             DataGrid.Columns.Add(textColumnPlaceName);
             DataGridTextColumn textColumnGuideName = new DataGridTextColumn();
             textColumnGuideName.Header = "Имя гида";
@@ -48,7 +48,7 @@ namespace TravelAgencyTouristView
         {
             public string dateCreate { get; set; }
             public string name { get; set; }
-            public string placeName { get; set; }
+            public string excursionName { get; set; }
             public string guideName { get; set; }
         }
         private void SendMessageClick(object sender, RoutedEventArgs e)
@@ -90,7 +90,7 @@ namespace TravelAgencyTouristView
                             dateCreate = elem.DateCreate.ToShortDateString(),
                             name = elem.Name.ToString()
                         });
-                        for (int i = 0; i < Math.Max(elem.Guides.Count, elem.Places.Count); ++i)
+                        for (int i = 0; i < Math.Max(elem.Guides.Count, elem.Excursions.Count); ++i)
                         {
                             Console.WriteLine(elem.Guides);
                             itemTrip newItem = new itemTrip();
@@ -98,9 +98,9 @@ namespace TravelAgencyTouristView
                             {
                                 newItem.guideName = elem.Guides[i].GuideName;
                             }
-                            if (i < elem.Places.Count)
+                            if (i < elem.Excursions.Count)
                             {
-                                newItem.placeName = elem.Places[i].Name;
+                                newItem.excursionName = elem.Excursions[i].Name;
                             }
                             DataGrid.Items.Add(newItem);
                         }
