@@ -15,41 +15,47 @@ namespace TravelAgencyDatabaseImplements.Implements
     {
         public bool Registered(OperatorBindingModel model)
         {
-            using var context = new TravelAgencyDatabase();
-            if (context.Operators.FirstOrDefault(rec => rec.Login == model.Login || rec.Email == model.Email) != null)
+            using (var context = new TravelAgencyDatabase())
             {
-                return true;
+                if (context.Operators.FirstOrDefault(rec => rec.Login == model.Login || rec.Email == model.Email) != null)
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
         }
         public void Insert(OperatorBindingModel model)
         {
-            using var context = new TravelAgencyDatabase();
-            context.Operators.Add(new Operator { Login = model.Login, Password = model.Password, Email = model.Email, Name = model.Name });
-            context.SaveChanges();
+            using (var context = new TravelAgencyDatabase())
+            {
+                context.Operators.Add(new Operator { Login = model.Login, Password = model.Password, Email = model.Email, Name = model.Name });
+                context.SaveChanges();
+            }
         }
         public bool Login(OperatorBindingModel model)
         {
-            using var context = new TravelAgencyDatabase();
-            if (!context.Operators.Contains(new Operator { Login = model.Login, Password = model.Password }))
+            using (var context = new TravelAgencyDatabase())
             {
-                return false;
+                if (!context.Operators.Contains(new Operator { Login = model.Login, Password = model.Password }))
+                {
+                    return false;
+                }
+                if (!context.Operators.Select(rec => rec.Login).Contains(model.Login))
+                {
+                    return false;
+                }
+                if (context.Operators.FirstOrDefault(rec => rec.Login == model.Login).Password != model.Password)
+                {
+                    return false;
+                }
+                return true;
             }
-            if (!context.Operators.Select(rec => rec.Login).Contains(model.Login))
-            {
-                return false;
-            }
-            if (context.Operators.FirstOrDefault(rec => rec.Login == model.Login).Password != model.Password)
-            {
-                return false;
-            }
-            return true;
         }
         public OperatorBindingModel GetOperatorData(OperatorBindingModel model)
         {
-            var visitor = GetElement(model);
-            visitor.Password = "";
-            return visitor;
+            var oper = GetElement(model);
+            oper.Password = "";
+            return oper;
         }
         public OperatorBindingModel GetElement(OperatorBindingModel model)
         {
@@ -57,9 +63,11 @@ namespace TravelAgencyDatabaseImplements.Implements
             {
                 return null;
             }
-            using var context = new TravelAgencyDatabase();
-            var oper = context.Operators.FirstOrDefault(rec => rec.Login == model.Login);
-            return oper != null ? CreateModel(oper) : null;
+            using (var context = new TravelAgencyDatabase())
+            {
+                var oper = context.Operators.FirstOrDefault(rec => rec.Login == model.Login);
+                return oper != null ? CreateModel(oper) : null;
+            }
         }
         public OperatorBindingModel CreateModel(Operator oper)
         {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using TravelAgencyBusinessLogic.MailWorker;
+using TravelAgencyContracts.BindingModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Unity;
+using System.Configuration;
+using Unity.Lifetime;
 
 namespace TravelAgencyOperatorView
 {
@@ -24,6 +28,16 @@ namespace TravelAgencyOperatorView
         public MainWindow()
         {
             InitializeComponent();
+            var mailSender = new MailKitWorker();
+            mailSender.MailConfig(new MailConfigBindingModel
+            {
+                MailLogin = ConfigurationManager.AppSettings["MailLogin"],
+                MailPassword = ConfigurationManager.AppSettings["MailPassword"],
+                SmtpClientHost = ConfigurationManager.AppSettings["SmtpClientHost"],
+                SmtpClientPort = Convert.ToInt32(ConfigurationManager.AppSettings["SmtpClientPort"]),
+                PopHost = ConfigurationManager.AppSettings["PopHost"],
+                PopPort = Convert.ToInt32(ConfigurationManager.AppSettings["PopPort"])
+            });
         }
 
         private void Guides_Click(object sender, RoutedEventArgs e)
