@@ -14,5 +14,6 @@ namespace TravelAgencyContracts.StoragesContracts
         bool Registered(TouristBindingModel model);
         void Insert(TouristBindingModel model);
         bool Login(TouristBindingModel model);
+        TouristBindingModel GetTouristData(TouristBindingModel model);
     }
 }

@@ -13,5 +13,6 @@ namespace TravelAgencyContracts.BindingModels
         public DateTime? DateAfter { get; set; }
         public DateTime? DateBefore { get; set; }
         public List<TripViewModel>? trips { get; set; }
+        public String TouristLogin { get; set; }
     }
 }

@@ -31,44 +31,38 @@ namespace TravelAgencyTouristView
             textColumnDate.Header = "Дата создания путешествия";
             textColumnDate.Binding = new Binding("dateCreate");
             DataGrid.Columns.Add(textColumnDate);
-            DataGridTextColumn textColumnWeight = new DataGridTextColumn();
-            textColumnWeight.Header = "Название путешествия";
-            textColumnWeight.Binding = new Binding("name");
-            DataGrid.Columns.Add(textColumnWeight);
-            DataGridTextColumn textColumnCutleryName = new DataGridTextColumn();
-            textColumnCutleryName.Header = "Название посещенного места";
-            textColumnCutleryName.Binding = new Binding("placeName");
-            DataGrid.Columns.Add(textColumnCutleryName);
-            DataGridTextColumn textColumnCutleryCount = new DataGridTextColumn();
-            textColumnCutleryCount.Header = "Количество посещенных мест";
-            textColumnCutleryCount.Binding = new Binding("placeCount");
-            DataGrid.Columns.Add(textColumnCutleryCount);
-            DataGridTextColumn textColumnCookName = new DataGridTextColumn();
-            textColumnCookName.Header = "Имя гида";
-            textColumnCookName.Binding = new Binding("guideName");
-            DataGrid.Columns.Add(textColumnCookName);
+            DataGridTextColumn textColumnName = new DataGridTextColumn();
+            textColumnName.Header = "Название путешествия";
+            textColumnName.Binding = new Binding("name");
+            DataGrid.Columns.Add(textColumnName);
+            DataGridTextColumn textColumnPlaceName = new DataGridTextColumn();
+            textColumnPlaceName.Header = "Название посещенного места";
+            textColumnPlaceName.Binding = new Binding("placeName");
+            DataGrid.Columns.Add(textColumnPlaceName);
+            DataGridTextColumn textColumnGuideName = new DataGridTextColumn();
+            textColumnGuideName.Header = "Имя гида";
+            textColumnGuideName.Binding = new Binding("guideName");
+            DataGrid.Columns.Add(textColumnGuideName);
         }
-        private class itemLucnh
+        private class itemTrip
         {
             public string dateCreate { get; set; }
             public string name { get; set; }
             public string placeName { get; set; }
-            public string placeCount { get; set; }
             public string guideName { get; set; }
         }
         private void SendMessageClick(object sender, RoutedEventArgs e)
         {
-            var dialog = new SaveFileDialog();
-            dialog.Filter = "pdf|*.pdf";
-            if (dialog.ShowDialog() == true)
+            if (DatePickerAfter.SelectedDate == null || DatePickerBefore.SelectedDate == null ||
+                DatePickerAfter.SelectedDate >= DatePickerBefore.SelectedDate)
             {
-                reportLogic.saveTripsToPdfFile(new ReportBindingModel()
-                {
-                    DateAfter = DatePickerAfter.SelectedDate,
-                    DateBefore = DatePickerBefore.SelectedDate,
-                    FileName = dialog.FileName
-                });
+                MessageBox.Show("Дата начала должна быть меньше даты окончания", "Ошибка");
+                return;
             }
+            //SendMailWindow sendMailWindow = App.Container.Resolve<SendMailWindow>();
+            //sendMailWindow.DateAfter = DatePickerAfter.SelectedDate.Value;
+            //sendMailWindow.DateBefore = DatePickerBefore.SelectedDate.Value;
+            //sendMailWindow.ShowDialog();
         }
         private void ShowClick(object sender, RoutedEventArgs e)
         {
@@ -80,22 +74,26 @@ namespace TravelAgencyTouristView
             }
             try
             {
-                var dict = reportLogic.GetTripsPCView(new ReportBindingModel() { 
+                var dict = reportLogic.GetTripsPCView(new ReportBindingModel()
+                {
                     DateAfter = DatePickerAfter.SelectedDate,
-                    DateBefore = DatePickerBefore.SelectedDate
+                    DateBefore = DatePickerBefore.SelectedDate,
+                    TouristLogin = AuthorizationWindow.AutorizedTourist
                 });
                 if (dict != null)
                 {
                     DataGrid.Items.Clear();
                     foreach (var elem in dict)
                     {
-                        DataGrid.Items.Add(new itemLucnh() { 
+                        DataGrid.Items.Add(new itemTrip()
+                        {
                             dateCreate = elem.DateCreate.ToShortDateString(),
                             name = elem.Name.ToString()
                         });
                         for (int i = 0; i < Math.Max(elem.Guides.Count, elem.Places.Count); ++i)
                         {
-                            itemLucnh newItem = new itemLucnh();
+                            Console.WriteLine(elem.Guides);
+                            itemTrip newItem = new itemTrip();
                             if (i < elem.Guides.Count)
                             {
                                 newItem.guideName = elem.Guides[i].GuideName;
@@ -103,7 +101,6 @@ namespace TravelAgencyTouristView
                             if (i < elem.Places.Count)
                             {
                                 newItem.placeName = elem.Places[i].Name;
-                                newItem.placeCount = elem.Places[i].DateOfVisit.ToString();
                             }
                             DataGrid.Items.Add(newItem);
                         }

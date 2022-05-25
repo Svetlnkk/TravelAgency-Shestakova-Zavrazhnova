@@ -32,5 +32,10 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
         {
             return touristStorage.Login(model);
         }
+
+        public TouristBindingModel GetTouristData(TouristBindingModel model)
+        {
+            return touristStorage.GetTouristData(model);
+        }
     }
 }

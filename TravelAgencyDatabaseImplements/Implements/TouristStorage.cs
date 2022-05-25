@@ -71,5 +71,12 @@ namespace TravelAgencyDatabaseImplements.Implements
                 Name = worker.Name
             };
         }
+
+        public TouristBindingModel GetTouristData(TouristBindingModel model)
+        {
+            var tourist = GetElement(model);
+            tourist.Password = "";
+            return tourist;
+        }
     }
 }

@@ -24,6 +24,7 @@ namespace TravelAgencyTouristView
     /// </summary>
     public partial class AuthorizationWindow : Window
     {
+        public static string AutorizedTourist { get; private set; }
         private readonly ITouristLogic workerLogic;
         public AuthorizationWindow(ITouristLogic workerLogic)
         {
@@ -50,6 +51,7 @@ namespace TravelAgencyTouristView
             }
             if (workerLogic.Login(new TouristBindingModel { Login = login, Password = password}))
             {
+                AutorizedTourist = login;
                 MainWindow mainWindow = App.Container.Resolve<MainWindow>();
                 mainWindow.Show();
                 this.Close();

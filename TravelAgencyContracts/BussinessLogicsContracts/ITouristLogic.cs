@@ -13,5 +13,6 @@ namespace TravelAgencyContracts.BussinessLogicsContracts
     {
         void Create(TouristBindingModel model);
         bool Login(TouristBindingModel model);
+        TouristBindingModel GetTouristData(TouristBindingModel model);
     }
 }
