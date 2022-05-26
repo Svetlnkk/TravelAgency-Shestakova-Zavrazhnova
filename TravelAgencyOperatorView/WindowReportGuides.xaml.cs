@@ -117,18 +117,7 @@ namespace TravelAgencyOperatorView
             WindowMail windowMail = App.Container.Resolve<WindowMail>();
             windowMail.DateAfter = DatePickerAfter.SelectedDate.Value;
             windowMail.DateBefore = DatePickerBefore.SelectedDate.Value;
-            windowMail.ShowDialog();
-            /*var dialog = new SaveFileDialog();
-            dialog.Filter = "pdf|*.pdf";
-            if (dialog.ShowDialog() == true)
-            {
-                reportOperator.saveGuidesToPdfFile(new ReportOperatorBindingModel()
-                {
-                    DateFrom = DatePickerAfter.SelectedDate,
-                    DateTo = DatePickerBefore.SelectedDate,
-                    FileName = dialog.FileName
-                });
-            }*/
+            windowMail.ShowDialog();            
         }
     }
 }
