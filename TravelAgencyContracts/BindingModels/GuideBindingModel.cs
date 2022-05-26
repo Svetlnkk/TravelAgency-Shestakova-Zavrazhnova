@@ -13,7 +13,6 @@ namespace TravelAgencyContracts.BindingModels
         public decimal Cost { get; set; }
         public DateTime Date { get; set; }        
         public Dictionary<int, int> GuideExcursions { get; set; }
-        //public Dictionary<int, int> GuideTours { get; set; }
         public string OperatorLogin { get; set; }
         public DateTime? DateFrom { get; set; }
         public DateTime? DateTo { get; set; }

@@ -66,28 +66,7 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
         }
 
         public List<ExcursionViewModel> GetTourExcursion(ReportOperatorBindingModel model)
-        {
-            /*var tours = model.tours;
-            var list = new List<ReportTourExcursionViewModel>();
-            foreach (var tour in tours)
-            {
-                var record = new ReportTourExcursionViewModel
-                {
-                    TourName = tour.TourName,
-                    Excursions = new List<int>(),
-                    GuideName = string.Empty
-                };
-                foreach (var guideKVP in tour.GuideTours)
-                {
-                    var guide = guideStorage.GetElement(new GuideBindingModel { Id = guideKVP.Key });
-                    foreach (var excursion in guide.GuideExcursions)
-                    {
-                        record.Excursions.Add(excursion.Value.Item1);
-                        record.GuideName = guide.GuideName;
-                    }
-                }
-                list.Add(record);
-            }*/
+        {            
             var list = new List<ExcursionViewModel>();
             var listExcurId = new List<int>();
             foreach (var tour in model.tours)
