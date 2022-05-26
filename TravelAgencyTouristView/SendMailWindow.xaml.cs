@@ -54,7 +54,7 @@ namespace TravelAgencyTouristView
                 {
                     DateAfter = DateAfter,
                     DateBefore = DateBefore,
-                    FileName = "reportOrdersByDate.pdf",
+                    FileName = "reportTripsByDate.pdf",
                     TouristLogin = AuthorizationWindow.AutorizedTourist
                 });
                 mailKitWorker.MailSendAsync(new MailSendInfoBindingModel
