@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TravelAgencyTouristView"
         mc:Ignorable="d"
-        Title="Привязка заказа" Height="450" Width="800" Loaded="BindExcursionTripsWindowLoaded" MinHeight="300" MinWidth="710">
+        Title="Привязка экскурсии" Height="450" Width="800" Loaded="BindExcursionTripsWindowLoaded" MinHeight="300" MinWidth="710">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>

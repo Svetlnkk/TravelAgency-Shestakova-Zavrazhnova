@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TravelAgencyTouristView"
         mc:Ignorable="d"
-        Title="Посещенные места" Height="300" Width="400" MinHeight="200" MinWidth="320" Loaded="PlaceWindowLoad">
+        Title="Посещенное место" Height="300" Width="400" MinHeight="200" MinWidth="320" Loaded="PlaceWindowLoad">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>

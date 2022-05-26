@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TravelAgencyTouristView"
         mc:Ignorable="d"
-        Title="Отчет по обедам за период" Height="450" Width="880" MinHeight="300" MinWidth="300">
+        Title="Отчет по путешествиям за период" Height="450" Width="880" MinHeight="300" MinWidth="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>

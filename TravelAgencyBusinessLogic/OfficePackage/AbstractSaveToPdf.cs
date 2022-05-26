@@ -22,10 +22,10 @@ namespace TravelAgencyBusinessLogic.OfficePackage
             {
                 Text = $"с { info.DateAfter.ToShortDateString() } по { info.DateBefore.ToShortDateString() }", Style = "Normal"
             });
-            CreateTable(new List<string> { "2cm", "2cm", "5cm", "3cm", "3cm" });
+            CreateTable(new List<string> { "2cm", "2cm", "5cm", "3cm" });
             CreateRow(new PdfRowParameters
             {
-                Texts = new List<string> { "Дата путешествия", "Название путешествия", "Имя гида", "Название места", "Количество мест" },
+                Texts = new List<string> { "Дата путешествия", "Название путешествия", "Имя гида", "Название экскурсии" },
                 Style = "NormalTitle",
                 ParagraphAlignment = PdfParagraphAlignmentType.Center
             });
@@ -37,12 +37,12 @@ namespace TravelAgencyBusinessLogic.OfficePackage
                     Style = "Normal",
                     ParagraphAlignment = PdfParagraphAlignmentType.Left
                 });
-                for (int i = 0; i < Math.Max(trip.Guides.Count, trip.Places.Count); ++i)
+                for (int i = 0; i < Math.Max(trip.Guides.Count, trip.Excursions.Count); ++i)
                 {
                     PdfRowParameters newItem = new PdfRowParameters();
                     newItem.Style = "Normal";
                     newItem.ParagraphAlignment = PdfParagraphAlignmentType.Center;
-                    newItem.Texts = new List<string> { "", "", ""};
+                    newItem.Texts = new List<string> { "", ""};
                     if (i < trip.Guides.Count)
                     {
                         newItem.Texts.Add(trip.Guides[i].GuideName);
@@ -51,15 +51,15 @@ namespace TravelAgencyBusinessLogic.OfficePackage
                     {
                         newItem.Texts.Add("");
                     }
-                    if (i < trip.Places.Count)
+                    if (i < trip.Excursions.Count)
                     {
-                        newItem.Texts.Add(trip.Places[i].Name);
-                        newItem.Texts.Add(trip.Places[i].DateOfVisit.ToString());
+                        newItem.Texts.Add(trip.Excursions[i].Name);
+                        //newItem.Texts.Add(trip.Excursions[i].DateOfVisit.ToString());
                     }
                     else
                     {
                         newItem.Texts.Add("");
-                        newItem.Texts.Add("");
+                        //newItem.Texts.Add("");
                     }
                     CreateRow(newItem);
                 }

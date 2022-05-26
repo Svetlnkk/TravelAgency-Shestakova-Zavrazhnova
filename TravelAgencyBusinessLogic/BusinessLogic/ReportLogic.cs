@@ -19,17 +19,19 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
         private readonly IPlaceStorage placeStorage;
         private readonly IGuideStorage guideStorage;
         private readonly ITourStorage tourStorage;
+        private readonly IExcursionStorage excursionStorage;
         private readonly ITouristStorage workerStorage;        
         private readonly AbstractSaveToPdf saveToPdf;
         private readonly AbstractSaveToWord saveToWord;
         private readonly AbstractSaveToExcel saveToExcel;
         public ReportLogic(ITripStorage tripStorage, IPlaceStorage placeStorage, IGuideStorage guideStorage, ITourStorage tourStorage,
-            ITouristStorage workerStorage, AbstractSaveToPdf saveToPdf, AbstractSaveToWord saveToWord, AbstractSaveToExcel saveToExcel)
+            ITouristStorage workerStorage, AbstractSaveToPdf saveToPdf, AbstractSaveToWord saveToWord, AbstractSaveToExcel saveToExcel, IExcursionStorage excursionStorage)
         {
             this.guideStorage = guideStorage;
             this.placeStorage = placeStorage;
             this.tripStorage = tripStorage;
             this.tourStorage = tourStorage;
+            this.excursionStorage = excursionStorage;
             this.workerStorage = workerStorage;            
             this.saveToPdf = saveToPdf;
             this.saveToWord = saveToWord;
@@ -51,20 +53,29 @@ namespace TravelAgencyBusinessLogic.BusinessLogic
                     DateCreate = trip.Date,
                     Name = trip.Name,
                     Guides = new List<GuideViewModel>(),
-                    Places = new List<PlaceViewModel>()
+                    Excursions = new List<ExcursionViewModel>()
                 };
                 var tripTours = trip.TripTours.Keys.ToList().Select(rec => tourStorage.GetElement(new TourBindingModel { Id = rec }));
                 var listGuideIds = new List<int>();
                 foreach (var elem in tripTours)
                 {
                    listGuideIds.AddRange(elem.GuideTours.Keys.ToList());
+                   Console.WriteLine(elem.GuideTours.Keys);
 
                 }
                 record.Guides = listGuideIds.Distinct().ToList().Select(rec => guideStorage.GetElement(new GuideBindingModel { Id = rec })).ToList();
-                var tripExcursions = trip.TripExcursions.Keys.ToList();
-                var tripPlaces = placeStorage.GetFilteredList(new PlaceBindingModel { TouristLogin = model.TouristLogin }).Where(rec => tripExcursions.Contains(rec.PlaceExcursion)).ToList();
-                record.Places = tripPlaces;
-                record.Places = tripPlaces;
+                //var tripExcursions = trip.TripExcursions.Keys.ToList();
+                //var tripPlaces = placeStorage.GetFilteredList(new PlaceBindingModel { TouristLogin = model.TouristLogin }).Where(rec => tripExcursions.Contains(rec.PlaceExcursion)).ToList();
+                //record.Places = tripPlaces;
+
+                var listExcursionIds = new List<int>();
+                var tripExcursionss = trip.TripExcursions.Keys.ToList().Select(rec => excursionStorage.GetElement(new ExcursionBindingModel { Id = rec }));
+                foreach (var elem in tripExcursionss)
+                {
+                    listExcursionIds.Add(elem.Id);
+
+                }
+                record.Excursions = listExcursionIds.Distinct().ToList().Select(rec => excursionStorage.GetElement(new ExcursionBindingModel { Id = rec })).ToList();
                 list.Add(record);
             }
             return list;

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TravelAgencyTouristView"
         mc:Ignorable="d"
-        Title="Программа учета" Height="450" Width="800">
+        Title="Программа учета" Height="450" Width="800" Background="#8B8BFD">
     <Grid>
         <Menu Height="25" VerticalAlignment="Top">
             <MenuItem Header="Путешествия" Click="TripsClick"></MenuItem>
@@ -14,5 +14,6 @@
             <MenuItem Header="Получение списка" Click="ReportGuidesbyTripsClick"></MenuItem>
             <MenuItem Header="Отчет" Click="ReportTripsClick"></MenuItem>
         </Menu>
+        <Image Name ="img" Source="images/yellow-ticket.jpg" Margin="0,30,0,0"></Image>
     </Grid>
 </Window>

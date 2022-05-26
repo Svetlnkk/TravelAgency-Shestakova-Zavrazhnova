@@ -10,7 +10,7 @@ namespace TravelAgencyContracts.ViewModels
     {
         public DateTime DateCreate { get; set; }
         public string Name { get; set; }
-        public List<PlaceViewModel> Places { get; set; }
+        public List<ExcursionViewModel> Excursions { get; set; }
         public List<GuideViewModel> Guides { get; set; }
     }
 }
